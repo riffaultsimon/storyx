@@ -1,0 +1,80 @@
+from story.schema import CharacterProfile
+
+# OpenAI TTS voices mapped by character profile.
+# Voices: alloy, ash, ballad, coral, echo, fable, nova, onyx, sage, shimmer
+#
+# Masculine-leaning:  ash (warm), echo (steady), fable (expressive), onyx (deep)
+# Feminine-leaning:   alloy (neutral), coral (warm), nova (bright), shimmer (soft)
+# Neutral/versatile:  ballad (gentle), sage (calm)
+
+_VOICE_MAP = {
+    # (gender, age_bucket) -> voice
+    ("female", "child"):   "shimmer",
+    ("female", "teen"):    "nova",
+    ("female", "adult"):   "coral",
+    ("female", "elder"):   "sage",
+    ("male", "child"):     "alloy",
+    ("male", "teen"):      "echo",
+    ("male", "adult"):     "ash",
+    ("male", "elder"):     "onyx",
+    ("neutral", "child"):  "shimmer",
+    ("neutral", "teen"):   "alloy",
+    ("neutral", "adult"):  "ballad",
+    ("neutral", "elder"):  "sage",
+}
+
+_NARRATOR_VOICE = "fable"
+
+_EMOTION_STYLE = {
+    "neutral":   "Speak in a calm and steady tone.",
+    "happy":     "Speak in a cheerful, bright tone with a smile in your voice.",
+    "sad":       "Speak in a soft, melancholic tone with gentle pacing.",
+    "excited":   "Speak in an energetic, enthusiastic tone with higher energy.",
+    "scared":    "Speak in a trembling, anxious tone, slightly shaky.",
+    "angry":     "Speak in a firm, intense tone with controlled force.",
+    "whisper":   "Speak in a soft whisper, very quiet and intimate.",
+    "gentle":    "Speak in a soothing, tender tone with warmth.",
+    "surprised": "Speak with surprise, a slight gasp, and wide-eyed wonder.",
+}
+
+
+def _age_bucket(age: int) -> str:
+    if age < 13:
+        return "child"
+    if age < 18:
+        return "teen"
+    if age < 60:
+        return "adult"
+    return "elder"
+
+
+def pick_voice(character: CharacterProfile) -> str:
+    """Select an OpenAI TTS voice based on character gender and age."""
+    bucket = _age_bucket(character.age)
+    return _VOICE_MAP.get((character.gender, bucket), "alloy")
+
+
+def build_voice_instruction(character: CharacterProfile, emotion: str) -> str:
+    """Build an instruction string for the TTS model."""
+    emotion_style = _EMOTION_STYLE.get(emotion, _EMOTION_STYLE["neutral"])
+    return (
+        f"You are voicing a character named {character.name}, "
+        f"who is a {character.age}-year-old {character.gender}. "
+        f"{character.description}. "
+        f"{emotion_style} "
+        f"This is a children's story — keep the delivery engaging and age-appropriate."
+    )
+
+
+def get_narrator_voice() -> str:
+    return _NARRATOR_VOICE
+
+
+def build_narrator_instruction(emotion: str = "neutral") -> str:
+    """Build an instruction for narration segments."""
+    emotion_style = _EMOTION_STYLE.get(emotion, _EMOTION_STYLE["neutral"])
+    return (
+        f"You are a warm, engaging storyteller narrating a children's story. "
+        f"{emotion_style} "
+        f"Use clear enunciation and a moderate pace suitable for young listeners."
+    )
