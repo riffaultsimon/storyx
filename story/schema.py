@@ -3,9 +3,9 @@ from pydantic import BaseModel, Field
 
 class CharacterProfile(BaseModel):
     name: str
-    age: int
-    gender: str = Field(pattern=r"^(male|female|neutral)$")
-    description: str
+    age: int | None = None
+    gender: str | None = None
+    description: str = ""
     default_emotion: str = "neutral"
 
 

@@ -57,6 +57,7 @@ def generate_story(
     mood: str,
     age_range: str,
     story_length: str,
+    model_override: str | None = None,
 ) -> tuple[StructuredStory, dict]:
     length_guide = {
         "short": "8-12 segments",
@@ -72,8 +73,10 @@ def generate_story(
         f"Include at least 2-3 named characters with dialog."
     )
 
+    model = model_override or STORY_MODEL
+
     response = client.chat.completions.create(
-        model=STORY_MODEL,
+        model=model,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt},

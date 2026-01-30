@@ -12,7 +12,7 @@ from tts.voice_mapper import (
 logger = logging.getLogger(__name__)
 
 
-def synthesize_story(story: StructuredStory) -> tuple[list[dict], int]:
+def synthesize_story(story: StructuredStory, tts_model: str | None = None) -> tuple[list[dict], int]:
     """Synthesize all segments of a story via OpenAI TTS.
 
     Returns a tuple of:
@@ -32,7 +32,7 @@ def synthesize_story(story: StructuredStory) -> tuple[list[dict], int]:
         total_tts_chars += len(segment.text)
 
         try:
-            audio_bytes = synthesize(segment.text, voice, instructions)
+            audio_bytes = synthesize(segment.text, voice, instructions, model_override=tts_model)
             results.append({
                 "audio_bytes": audio_bytes,
                 "pause_after_ms": segment.pause_after_ms,

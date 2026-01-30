@@ -27,7 +27,34 @@ CREDIT_PACKS = [
 FREE_CREDITS_ON_REGISTER = 2
 
 # Estimated API costs per story component
-COST_GPT4O_PER_1K_INPUT = 0.0025
-COST_GPT4O_PER_1K_OUTPUT = 0.01
-COST_DALLE3_PER_IMAGE = 0.04
-COST_TTS_PER_1M_CHARS = 15.0  # $15 per 1M characters for gpt-4o-mini-tts
+
+# LLM pricing per 1K tokens: (input, output)
+LLM_PRICING = {
+    "gpt-4o":       (0.0025, 0.01),
+    "gpt-4o-mini":  (0.00015, 0.0006),
+    "gpt-4.1":      (0.002, 0.008),
+    "gpt-4.1-mini": (0.0004, 0.0016),
+}
+
+# Image generation per image
+COVER_PRICING = {
+    "dalle3":  0.04,
+    "imagen3": 0.03,
+}
+
+# TTS pricing per 1M characters
+TTS_PRICING = {
+    "gpt-4o-mini-tts": 15.0,
+    "tts-1":           15.0,
+    "tts-1-hd":        30.0,
+}
+
+# BGM pricing per generation
+COST_LYRIA2_PER_GENERATION = 0.05
+
+# Backwards-compatible defaults
+COST_GPT4O_PER_1K_INPUT = LLM_PRICING["gpt-4o"][0]
+COST_GPT4O_PER_1K_OUTPUT = LLM_PRICING["gpt-4o"][1]
+COST_DALLE3_PER_IMAGE = COVER_PRICING["dalle3"]
+COST_IMAGEN3_PER_IMAGE = COVER_PRICING["imagen3"]
+COST_TTS_PER_1M_CHARS = TTS_PRICING["gpt-4o-mini-tts"]

@@ -81,9 +81,12 @@ class Story(Base):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
+    bgm_path = Column(String(500), nullable=True)
+
     cost_story_generation = Column(Float, default=0.0)
     cost_cover_image = Column(Float, default=0.0)
     cost_tts = Column(Float, default=0.0)
+    cost_bgm = Column(Float, default=0.0)
     cost_total = Column(Float, default=0.0)
     segment_count = Column(Integer, default=0)
     total_tts_chars = Column(Integer, default=0)
@@ -108,3 +111,20 @@ class Transaction(Base):
 
     user = relationship("User", back_populates="transactions")
     story = relationship("Story", back_populates="transactions")
+
+
+class AppSettings(Base):
+    """Singleton settings table — always exactly one row with id='default'."""
+    __tablename__ = "app_settings"
+
+    id = Column(String(36), primary_key=True, default="default")
+    image_provider = Column(String(50), default="dalle3", nullable=False, server_default="dalle3")
+    bgm_enabled = Column(Boolean, default=False, nullable=False, server_default="0")
+    bgm_provider = Column(String(50), default="none", nullable=False, server_default="none")
+    story_model = Column(String(100), default="gpt-4o", nullable=False, server_default="gpt-4o")
+    tts_model = Column(String(100), default="gpt-4o-mini-tts", nullable=False, server_default="gpt-4o-mini-tts")
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )

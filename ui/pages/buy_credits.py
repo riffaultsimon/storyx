@@ -5,10 +5,11 @@ from credits.service import check_balance
 from credits.stripe_checkout import create_checkout_session
 from config import STRIPE_SECRET_KEY
 from db.session import SessionLocal
+from i18n import t
 
 
 def show_buy_credits_page():
-    st.markdown("## Buy Credits")
+    st.markdown(f"## {t('credits.header')}")
 
     db = SessionLocal()
     try:
@@ -16,25 +17,26 @@ def show_buy_credits_page():
     finally:
         db.close()
 
-    st.markdown(f"**Current balance:** {balance} credits")
-    st.markdown("Each credit lets you generate one complete story with cover art and audio.")
+    st.markdown(t("credits.balance", balance=balance))
+    st.markdown(t("credits.description"))
     st.divider()
 
     if not STRIPE_SECRET_KEY:
-        st.warning("Stripe is not configured. Please set STRIPE_SECRET_KEY in your environment.")
+        st.warning(t("credits.stripe_missing"))
         return
 
     cols = st.columns(len(CREDIT_PACKS))
 
     for i, pack in enumerate(CREDIT_PACKS):
         with cols[i]:
+            per_credit = f"${pack['per_credit']:.2f}"
             st.markdown(
                 f"### {pack['label']}\n"
                 f"**${pack['price_usd']:.2f}**\n\n"
-                f"${pack['per_credit']:.2f} per credit"
+                f"{t('credits.per_credit', price=per_credit)}"
             )
-            if st.button(f"Buy {pack['credits']} Credits", key=f"buy_{pack['credits']}"):
-                with st.spinner("Redirecting to checkout..."):
+            if st.button(t("credits.btn_buy", credits=pack['credits']), key=f"buy_{pack['credits']}"):
+                with st.spinner(t("credits.redirecting")):
                     url = create_checkout_session(
                         st.session_state["user_id"],
                         pack["credits"],
@@ -44,6 +46,6 @@ def show_buy_credits_page():
                             f'<meta http-equiv="refresh" content="0;url={url}">',
                             unsafe_allow_html=True,
                         )
-                        st.info("Redirecting to Stripe checkout...")
+                        st.info(t("credits.redirect_info"))
                     else:
-                        st.error("Failed to create checkout session. Check Stripe configuration.")
+                        st.error(t("credits.checkout_failed"))

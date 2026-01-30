@@ -41,9 +41,11 @@ def run_migrations():
                 "cost_story_generation": "FLOAT DEFAULT 0.0",
                 "cost_cover_image": "FLOAT DEFAULT 0.0",
                 "cost_tts": "FLOAT DEFAULT 0.0",
+                "cost_bgm": "FLOAT DEFAULT 0.0",
                 "cost_total": "FLOAT DEFAULT 0.0",
                 "segment_count": "INTEGER DEFAULT 0",
                 "total_tts_chars": "INTEGER DEFAULT 0",
+                "bgm_path": "VARCHAR(500)",
             }
             for col_name, col_type in story_columns.items():
                 if not _column_exists(inspector, "stories", col_name):
@@ -69,5 +71,35 @@ def run_migrations():
                 )
             """))
             logger.info("Created transactions table")
+
+        # --- App Settings table ---
+        if not _table_exists(inspector, "app_settings"):
+            conn.execute(text("""
+                CREATE TABLE app_settings (
+                    id VARCHAR(36) PRIMARY KEY DEFAULT 'default',
+                    image_provider VARCHAR(50) NOT NULL DEFAULT 'dalle3',
+                    bgm_enabled BOOLEAN NOT NULL DEFAULT 0,
+                    bgm_provider VARCHAR(50) NOT NULL DEFAULT 'none',
+                    story_model VARCHAR(100) NOT NULL DEFAULT 'gpt-4o',
+                    tts_model VARCHAR(100) NOT NULL DEFAULT 'gpt-4o-mini-tts',
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
+            conn.execute(text(
+                "INSERT INTO app_settings (id) VALUES ('default')"
+            ))
+            logger.info("Created app_settings table with defaults")
+        else:
+            # Add new columns to existing app_settings if missing
+            settings_columns = {
+                "bgm_enabled": "BOOLEAN NOT NULL DEFAULT 0",
+                "bgm_provider": "VARCHAR(50) NOT NULL DEFAULT 'none'",
+            }
+            for col_name, col_type in settings_columns.items():
+                if not _column_exists(inspector, "app_settings", col_name):
+                    conn.execute(text(
+                        f"ALTER TABLE app_settings ADD COLUMN {col_name} {col_type}"
+                    ))
+                    logger.info("Added app_settings.%s column", col_name)
 
     logger.info("Migrations complete")

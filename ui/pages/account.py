@@ -3,10 +3,11 @@ import streamlit as st
 from db.models import User, Story, Transaction
 from db.session import SessionLocal
 from auth.service import hash_password, verify_password
+from i18n import t
 
 
 def show_account_page():
-    st.markdown("## Account Settings")
+    st.markdown(f"## {t('account.header')}")
 
     user_id = st.session_state["user_id"]
     db = SessionLocal()
@@ -14,14 +15,14 @@ def show_account_page():
     try:
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
-            st.error("User not found.")
+            st.error(t("account.not_found"))
             return
 
         # Profile info
-        st.markdown("### Profile")
-        st.markdown(f"**Username:** {user.username}")
-        st.markdown(f"**Email:** {user.email}")
-        st.markdown(f"**Member since:** {user.created_at.strftime('%B %d, %Y')}")
+        st.markdown(f"### {t('account.profile')}")
+        st.markdown(t("account.username", username=user.username))
+        st.markdown(t("account.email", email=user.email))
+        st.markdown(t("account.member_since", date=user.created_at.strftime('%B %d, %Y')))
 
         # Stats
         story_count = db.query(Story).filter(Story.user_id == user_id).count()
@@ -30,14 +31,14 @@ def show_account_page():
             .filter(Story.user_id == user_id, Story.status == "ready")
             .count()
         )
-        st.markdown("### Stats")
+        st.markdown(f"### {t('account.stats')}")
         col1, col2, col3 = st.columns(3)
-        col1.metric("Total Stories", story_count)
-        col2.metric("Completed Stories", ready_count)
-        col3.metric("Credit Balance", user.credit_balance)
+        col1.metric(t("account.total_stories"), story_count)
+        col2.metric(t("account.completed"), ready_count)
+        col3.metric(t("account.credit_balance"), user.credit_balance)
 
         # Transaction history
-        st.markdown("### Transaction History")
+        st.markdown(f"### {t('account.transactions')}")
         transactions = (
             db.query(Transaction)
             .filter(Transaction.user_id == user_id)
@@ -54,29 +55,29 @@ def show_account_page():
                     f"*({txn.created_at.strftime('%Y-%m-%d %H:%M')})*"
                 )
         else:
-            st.info("No transactions yet.")
+            st.info(t("account.no_transactions"))
 
         # Change password
-        st.markdown("### Change Password")
+        st.markdown(f"### {t('account.change_pw')}")
         with st.form("change_password"):
-            current_pw = st.text_input("Current Password", type="password")
-            new_pw = st.text_input("New Password", type="password")
-            confirm_pw = st.text_input("Confirm New Password", type="password")
-            submitted = st.form_submit_button("Update Password")
+            current_pw = st.text_input(t("account.current_pw"), type="password")
+            new_pw = st.text_input(t("account.new_pw"), type="password")
+            confirm_pw = st.text_input(t("account.confirm_pw"), type="password")
+            submitted = st.form_submit_button(t("account.btn_update_pw"))
 
             if submitted:
                 if not current_pw or not new_pw or not confirm_pw:
-                    st.error("Please fill in all fields.")
+                    st.error(t("account.fill_all"))
                 elif new_pw != confirm_pw:
-                    st.error("New passwords do not match.")
+                    st.error(t("account.pw_mismatch"))
                 elif len(new_pw) < 6:
-                    st.error("Password must be at least 6 characters.")
+                    st.error(t("account.pw_too_short"))
                 elif not verify_password(current_pw, user.password_hash):
-                    st.error("Current password is incorrect.")
+                    st.error(t("account.pw_incorrect"))
                 else:
                     user.password_hash = hash_password(new_pw)
                     db.commit()
-                    st.success("Password updated successfully.")
+                    st.success(t("account.pw_updated"))
 
     finally:
         db.close()

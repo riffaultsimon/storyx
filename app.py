@@ -10,6 +10,7 @@ from ui.pages.account import show_account_page
 from ui.pages.buy_credits import show_buy_credits_page
 from ui.pages.admin import show_admin_page
 from credits.service import check_balance
+from i18n import t, LANGUAGES
 
 # --- CONFIGURATION ---
 st.set_page_config(
@@ -26,11 +27,11 @@ init_db()
 def nav_tile(label, icon, target_page):
     """Creates a square-ish orange tile for sidebar navigation."""
     is_active = st.session_state.get("page") == target_page
-    
+
     # Orange shades: Bright for active, slightly deeper for inactive
     bg_color = "#FF8C00" if is_active else "#E67E22"
     border_style = "2px solid white" if is_active else "1px solid rgba(255,255,255,0.1)"
-    
+
     with stylable_container(
         key=f"nav_container_{target_page}",
         css_styles=f"""
@@ -72,14 +73,14 @@ def _handle_stripe_return():
         try:
             result = verify_and_fulfill(db, session_id)
             if result:
-                st.success(f"Payment successful! {result['credits']} credits added.")
+                st.success(t("app.payment_success", credits=result['credits']))
             st.query_params.clear()
         finally:
             db.close()
         return
 
     if params.get("stripe_cancelled"):
-        st.info("Payment was cancelled.")
+        st.info(t("app.payment_cancelled"))
         st.query_params.clear()
 
 # --- MAIN APP LOGIC ---
@@ -98,7 +99,23 @@ else:
             '<div class="main-header"><h1 style="font-size:2.2rem; color:#FF8C00;">Storyx 🐙</h1></div>',
             unsafe_allow_html=True,
         )
-        st.markdown(f"Welcome back, **{st.session_state.get('username', 'Explorer')}**!")
+        st.markdown(t("app.welcome", username=st.session_state.get('username', 'Explorer')))
+
+        # Language selector
+        lang_codes = list(LANGUAGES.keys())
+        lang_labels = list(LANGUAGES.values())
+        current = st.session_state.get("lang", "en")
+        idx = lang_codes.index(current) if current in lang_codes else 0
+        selected = st.selectbox(
+            "🌐",
+            lang_codes,
+            index=idx,
+            format_func=lambda c: LANGUAGES[c],
+            label_visibility="collapsed",
+        )
+        if selected != current:
+            st.session_state["lang"] = selected
+            st.rerun()
 
         # Credit Balance Display
         db = SessionLocal()
@@ -106,29 +123,29 @@ else:
             balance = check_balance(db, st.session_state["user_id"])
         finally:
             db.close()
-        
-        st.info(f"💰 Balance: **{balance} Credits**")
+
+        st.info(t("app.balance", balance=balance))
         st.divider()
 
         # Mosaic Grid Layout
-        st.write("### Menu")
+        st.write(f"### {t('app.menu')}")
         col1, col2 = st.columns(2)
-        
+
         with col1:
-            nav_tile("Create", "✍️", "Create Story")
-            nav_tile("Credits", "💳", "Buy Credits")
+            nav_tile(t("app.nav.create"), "✍️", "Create Story")
+            nav_tile(t("app.nav.credits"), "💳", "Buy Credits")
             # Admin tile appears in the left column if user is admin
             if st.session_state.get("is_admin"):
-                nav_tile("Admin", "🔐", "Admin")
+                nav_tile(t("app.nav.admin"), "🔐", "Admin")
 
         with col2:
-            nav_tile("Library", "📚", "My Library")
-            nav_tile("Account", "👤", "Account")
+            nav_tile(t("app.nav.library"), "📚", "My Library")
+            nav_tile(t("app.nav.account"), "👤", "Account")
 
         st.divider()
-        
+
         # Logout Button
-        if st.button("Logout", use_container_width=True, type="secondary"):
+        if st.button(t("app.logout"), use_container_width=True, type="secondary"):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()

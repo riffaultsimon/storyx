@@ -3,30 +3,33 @@
 from sqlalchemy.orm import Session
 
 from credits.pricing import (
-    COST_DALLE3_PER_IMAGE,
-    COST_GPT4O_PER_1K_INPUT,
-    COST_GPT4O_PER_1K_OUTPUT,
-    COST_TTS_PER_1M_CHARS,
+    COVER_PRICING,
+    LLM_PRICING,
+    TTS_PRICING,
 )
 from db.models import Story
 
 
 def estimate_story_generation_cost(
-    prompt_tokens: int, completion_tokens: int
+    prompt_tokens: int, completion_tokens: int, model: str = "gpt-4o"
 ) -> float:
-    """Estimate GPT-4o cost from token counts."""
+    """Estimate LLM cost from token counts and model name."""
+    input_rate, output_rate = LLM_PRICING.get(
+        model, LLM_PRICING["gpt-4o"]
+    )
     return (
-        (prompt_tokens / 1000) * COST_GPT4O_PER_1K_INPUT
-        + (completion_tokens / 1000) * COST_GPT4O_PER_1K_OUTPUT
+        (prompt_tokens / 1000) * input_rate
+        + (completion_tokens / 1000) * output_rate
     )
 
 
-def estimate_cover_cost() -> float:
-    return COST_DALLE3_PER_IMAGE
+def estimate_cover_cost(provider: str = "dalle3") -> float:
+    return COVER_PRICING.get(provider, COVER_PRICING["dalle3"])
 
 
-def estimate_tts_cost(total_chars: int) -> float:
-    return (total_chars / 1_000_000) * COST_TTS_PER_1M_CHARS
+def estimate_tts_cost(total_chars: int, model: str = "gpt-4o-mini-tts") -> float:
+    rate = TTS_PRICING.get(model, TTS_PRICING["gpt-4o-mini-tts"])
+    return (total_chars / 1_000_000) * rate
 
 
 def record_costs(

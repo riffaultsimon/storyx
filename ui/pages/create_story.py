@@ -15,12 +15,13 @@ from credits.cost_tracker import (
     estimate_story_generation_cost,
     estimate_cover_cost,
 )
+from i18n import t
 
 logger = logging.getLogger(__name__)
 
 
 def show_create_story_page():
-    st.markdown("## Create a New Story")
+    st.markdown(f"## {t('create.header')}")
 
     # Credit balance check
     db = SessionLocal()
@@ -29,10 +30,10 @@ def show_create_story_page():
     finally:
         db.close()
 
-    st.markdown(f"**Credits remaining:** {balance}")
+    st.markdown(t("create.credits_remaining", balance=balance))
     if balance < 1:
-        st.warning("You need at least 1 credit to generate a story.")
-        if st.button("Buy Credits"):
+        st.warning(t("create.no_credits"))
+        if st.button(t("create.buy_credits")):
             st.session_state["_nav"] = "Buy Credits"
             st.rerun()
         return
@@ -42,24 +43,32 @@ def show_create_story_page():
 
         with col1:
             topic = st.text_input(
-                "What should the story be about?",
-                placeholder="e.g., A brave little rabbit who learns to share",
+                t("create.topic_label"),
+                placeholder=t("create.topic_placeholder"),
             )
             setting = st.text_input(
-                "Where does it take place?",
-                placeholder="e.g., A magical forest, a seaside village",
+                t("create.setting_label"),
+                placeholder=t("create.setting_placeholder"),
             )
-            mood = st.selectbox("Mood", MOODS)
+            mood = st.selectbox(
+                t("create.mood"),
+                MOODS,
+                format_func=lambda m: t(f"create.mood.{m}"),
+            )
 
         with col2:
-            age_range = st.selectbox("Age Range", AGE_RANGES)
-            story_length = st.selectbox("Story Length", STORY_LENGTHS)
+            age_range = st.selectbox(t("create.age_range"), AGE_RANGES)
+            story_length = st.selectbox(
+                t("create.story_length"),
+                STORY_LENGTHS,
+                format_func=lambda s: t(f"create.story_length.{s}"),
+            )
 
-        submitted = st.form_submit_button("Generate Story")
+        submitted = st.form_submit_button(t("create.btn_generate"))
 
     if submitted:
         if not topic or not setting:
-            st.error("Please provide a topic and setting.")
+            st.error(t("create.need_topic"))
             return
 
         _handle_story_generation(topic, setting, mood, age_range, story_length)
@@ -70,14 +79,25 @@ def show_create_story_page():
 
 
 def _handle_story_generation(topic, setting, mood, age_range, story_length):
-    with st.spinner("Crafting your story..."):
+    with st.spinner(t("create.generating")):
         try:
-            structured, usage = generate_story(topic, setting, mood, age_range, story_length)
+            from db.settings import get_settings
+            _db = SessionLocal()
+            try:
+                _settings = get_settings(_db)
+                _story_model = _settings.story_model
+            finally:
+                _db.close()
+            structured, usage = generate_story(
+                topic, setting, mood, age_range, story_length,
+                model_override=_story_model,
+            )
         except Exception as e:
-            st.error(f"Story generation failed: {e}")
+            st.error(t("create.gen_failed", error=e))
             logger.exception("Story generation failed")
             return
 
+    usage["story_model"] = _story_model
     st.session_state["preview_story"] = structured
     st.session_state["story_usage"] = usage
     st.session_state["story_params"] = {
@@ -98,13 +118,13 @@ def _show_story_preview():
     st.markdown(f"*{structured.summary}*")
 
     if structured.moral:
-        st.info(f"Moral: {structured.moral}")
+        st.info(t("create.moral", moral=structured.moral))
 
-    with st.expander("Characters", expanded=False):
+    with st.expander(t("create.characters"), expanded=False):
         for ch in structured.characters:
             st.markdown(f"- **{ch.name}** (age {ch.age}, {ch.gender}): {ch.description}")
 
-    with st.expander("Story Segments", expanded=True):
+    with st.expander(t("create.segments"), expanded=True):
         for seg in structured.segments:
             if seg.type == "narration":
                 st.markdown(f"*{seg.text}*")
@@ -114,11 +134,11 @@ def _show_story_preview():
     col_save, col_discard = st.columns(2)
 
     with col_save:
-        if st.button("Save & Generate Audio"):
+        if st.button(t("create.btn_save")):
             _save_and_generate(structured, params)
 
     with col_discard:
-        if st.button("Discard"):
+        if st.button(t("create.btn_discard")):
             del st.session_state["preview_story"]
             del st.session_state["story_params"]
             st.rerun()
@@ -132,26 +152,42 @@ def _save_and_generate(structured, params):
 
         # Deduct credit
         if not deduct_credit(db, user_id, story_id):
-            st.error("Insufficient credits. Please buy more credits.")
+            st.error(t("create.insufficient"))
             return
 
         # Generate cover image
         cover_path = None
         cover_cost = 0.0
         try:
-            with st.spinner("Generating cover image..."):
-                image_url = generate_cover_image(structured.summary, structured.title)
-                cover_path = download_and_save_image(image_url, story_id)
-                cover_cost = estimate_cover_cost()
+            from db.settings import get_settings
+            settings = get_settings(db)
+            image_provider = settings.image_provider
+
+            with st.spinner(t("create.gen_cover")):
+                result = generate_cover_image(
+                    structured.summary, structured.title, provider=image_provider
+                )
+                if image_provider == "imagen3":
+                    import shutil, os
+                    covers_dir = os.path.join("media", "covers")
+                    os.makedirs(covers_dir, exist_ok=True)
+                    final_path = os.path.join(covers_dir, f"{story_id}.png")
+                    if result != final_path:
+                        shutil.move(result, final_path)
+                    cover_path = final_path
+                else:
+                    cover_path = download_and_save_image(result, story_id)
+                cover_cost = estimate_cover_cost(provider=image_provider)
         except Exception as e:
             logger.warning("Cover generation failed: %s", e)
-            st.warning("Cover image generation failed, continuing without it.")
+            st.warning(t("create.cover_failed"))
 
         # Estimate story generation cost
         usage = st.session_state.get("story_usage", {})
         gen_cost = estimate_story_generation_cost(
             usage.get("prompt_tokens", 0),
             usage.get("completion_tokens", 0),
+            model=usage.get("story_model", "gpt-4o"),
         )
 
         story = Story(
@@ -181,12 +217,12 @@ def _save_and_generate(structured, params):
         del st.session_state["story_params"]
         st.session_state.pop("story_usage", None)
 
-        st.success(f"Story '{structured.title}' saved! Audio is being generated.")
-        st.info("Check your library for progress.")
+        st.success(t("create.saved", title=structured.title))
+        st.info(t("create.check_library"))
 
     except Exception as e:
         db.rollback()
-        st.error(f"Failed to save story: {e}")
+        st.error(t("create.save_failed", error=e))
         logger.exception("Failed to save story")
     finally:
         db.close()

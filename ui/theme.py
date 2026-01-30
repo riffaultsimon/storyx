@@ -5,14 +5,12 @@ def inject_custom_css():
     st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
-
         html, body, [class*="css"] {
-            font-family: 'Comic Neue', cursive, sans-serif;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Comic Neue', cursive, sans-serif;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
             color: #2D3436;
         }
 
@@ -20,7 +18,7 @@ def inject_custom_css():
             border-radius: 25px;
             padding: 0.5rem 2rem;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive, sans-serif;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
             color: white;
             border: none;
@@ -97,7 +95,7 @@ def inject_custom_css():
         .stTextArea > div > div > textarea {
             border-radius: 15px;
             border: 2px solid #FFD93D;
-            font-family: 'Comic Neue', cursive, sans-serif;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
         }
 
         .stTextInput > div > div > input:focus,

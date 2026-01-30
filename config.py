@@ -29,6 +29,29 @@ STRIPE_PRICE_ID_15 = os.getenv("STRIPE_PRICE_ID_15", "")
 STRIPE_PRICE_ID_50 = os.getenv("STRIPE_PRICE_ID_50", "")
 APP_BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8501")
 
+# Google Cloud / Vertex AI
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "")
+GOOGLE_CLOUD_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
+GOOGLE_SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
+
+
+def get_google_client():
+    """Build a google-genai Client using service account credentials via Vertex AI."""
+    from google import genai
+    from google.oauth2 import service_account
+
+    credentials = service_account.Credentials.from_service_account_file(
+        GOOGLE_SERVICE_ACCOUNT_FILE,
+        scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    )
+    return genai.Client(
+        vertexai=True,
+        project=GOOGLE_CLOUD_PROJECT,
+        location=GOOGLE_CLOUD_LOCATION,
+        credentials=credentials,
+    )
+
 # Emotions supported
 EMOTIONS = [
     "neutral", "happy", "sad", "excited", "scared",

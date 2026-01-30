@@ -37,20 +37,51 @@ def _process_tts(story_id: str, structured_story: StructuredStory):
 
         # Synthesize all segments
         logger.info("Starting TTS synthesis for story %s", story_id)
-        segments, total_tts_chars = synthesize_story(structured_story)
+        from db.settings import get_settings
+        settings = get_settings(db)
+        segments, total_tts_chars = synthesize_story(structured_story, tts_model=settings.tts_model)
 
-        # Assemble into MP3
-        duration = assemble_audio(segments, output_path)
+        # Assemble into MP3 with ID3 tags for player compatibility
+        audio_tags = {
+            "title": story.title or "StoryX Story",
+            "artist": "StoryX",
+            "album": "StoryX Stories",
+            "genre": "Children",
+        }
+        duration = assemble_audio(segments, output_path, tags=audio_tags)
 
         # Record TTS cost data
-        from credits.cost_tracker import estimate_tts_cost, record_costs
-        cost_tts = estimate_tts_cost(total_tts_chars)
+        from credits.cost_tracker import estimate_tts_cost
+        cost_tts = estimate_tts_cost(total_tts_chars, model=settings.tts_model)
         story.total_tts_chars = total_tts_chars
         story.cost_tts = round(cost_tts, 6)
+
+        # BGM generation (if enabled)
+        cost_bgm = 0.0
+        if settings.bgm_enabled and settings.bgm_provider == "lyria2":
+            from audio.bgm import generate_bgm, mix_bgm
+            logger.info("Generating BGM for story %s", story_id)
+            bgm_path = generate_bgm(
+                mood=story.mood or "calming",
+                duration_seconds=duration,
+                story_id=story_id,
+            )
+            if bgm_path:
+                story.bgm_path = bgm_path
+                mixed_path = os.path.join(audio_dir, f"{story_id}_mixed.mp3")
+                duration = mix_bgm(output_path, bgm_path, mixed_path, tags=audio_tags)
+                # Replace the narration-only file with the mixed version
+                os.replace(mixed_path, output_path)
+                from credits.pricing import COST_LYRIA2_PER_GENERATION
+                cost_bgm = COST_LYRIA2_PER_GENERATION
+                logger.info("BGM mixed for story %s", story_id)
+
+        story.cost_bgm = round(cost_bgm, 6)
         story.cost_total = round(
             (story.cost_story_generation or 0)
             + (story.cost_cover_image or 0)
-            + cost_tts, 6
+            + cost_tts
+            + cost_bgm, 6
         )
 
         # Update story record

@@ -9,19 +9,22 @@ logger = logging.getLogger(__name__)
 _client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-def synthesize(text: str, voice: str, instructions: str) -> bytes:
+def synthesize(text: str, voice: str, instructions: str, model_override: str | None = None) -> bytes:
     """Synthesize speech via the OpenAI TTS API.
 
     Args:
         text: The text to speak.
         voice: OpenAI voice name (alloy, ash, ballad, coral, echo, fable, nova, onyx, sage, shimmer).
         instructions: Style/emotion instruction for gpt-4o-mini-tts.
+        model_override: Optional model name to use instead of the default.
 
     Returns:
         Raw audio bytes in the configured format (MP3).
     """
+    model = model_override or TTS_MODEL
+
     response = _client.audio.speech.create(
-        model=TTS_MODEL,
+        model=model,
         voice=voice,
         input=text,
         instructions=instructions,
