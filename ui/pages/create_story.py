@@ -15,7 +15,8 @@ from credits.cost_tracker import (
     estimate_story_generation_cost,
     estimate_cover_cost,
 )
-from i18n import t
+from i18n import t, get_lang
+from ui.loader import storyx_loader
 
 logger = logging.getLogger(__name__)
 
@@ -71,15 +72,15 @@ def show_create_story_page():
             st.error(t("create.need_topic"))
             return
 
-        _handle_story_generation(topic, setting, mood, age_range, story_length)
+        _handle_story_generation(topic, setting, mood, age_range, story_length, get_lang())
 
     # Show preview if story was just generated
     if st.session_state.get("preview_story"):
         _show_story_preview()
 
 
-def _handle_story_generation(topic, setting, mood, age_range, story_length):
-    with st.spinner(t("create.generating")):
+def _handle_story_generation(topic, setting, mood, age_range, story_length, language="en"):
+    with storyx_loader(t("create.generating")):
         try:
             from db.settings import get_settings
             _db = SessionLocal()
@@ -91,6 +92,7 @@ def _handle_story_generation(topic, setting, mood, age_range, story_length):
             structured, usage = generate_story(
                 topic, setting, mood, age_range, story_length,
                 model_override=_story_model,
+                language=language,
             )
         except Exception as e:
             st.error(t("create.gen_failed", error=e))
@@ -150,8 +152,10 @@ def _save_and_generate(structured, params):
         story_id = str(uuid.uuid4())
         user_id = st.session_state["user_id"]
 
-        # Deduct credit
-        if not deduct_credit(db, user_id, story_id):
+        # Deduct credit (story_id=None because the story row doesn't exist yet;
+        # we link the transaction to the story after it is committed)
+        credit_txn = deduct_credit(db, user_id, story_id=None)
+        if credit_txn is None:
             st.error(t("create.insufficient"))
             return
 
@@ -163,7 +167,7 @@ def _save_and_generate(structured, params):
             settings = get_settings(db)
             image_provider = settings.image_provider
 
-            with st.spinner(t("create.gen_cover")):
+            with storyx_loader(t("create.gen_cover")):
                 result = generate_cover_image(
                     structured.summary, structured.title, provider=image_provider
                 )
@@ -208,6 +212,10 @@ def _save_and_generate(structured, params):
             segment_count=len(structured.segments),
         )
         db.add(story)
+        db.commit()
+
+        # Link the credit transaction to the newly created story
+        credit_txn.story_id = story_id
         db.commit()
 
         # Submit TTS job

@@ -42,7 +42,7 @@ def nav_tile(label, icon, target_page):
                 height: 90px;
                 width: 100%;
                 border: {border_style} !important;
-                margin-bottom: -10px;
+                margin-bottom: 4px;
                 transition: all 0.2s ease-in-out;
             }}
             button:hover {{

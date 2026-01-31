@@ -42,6 +42,32 @@ Optional (for credit purchases):
 ```bash
 streamlit run app.py
 ```
+### Docker
+build image
+```bash
+docker compose up --build
+```
+launch image
+```bash
+docker compose up 
+```
+### Public Access with Cloudflare Tunnel
+
+To share your local instance with people outside your network without configuring your router:
+
+1. Install cloudflared:
+   ```bash
+   winget install Cloudflare.cloudflared
+   ```
+
+2. Start the tunnel (while your app is running):
+   ```bash
+   cloudflared tunnel --url http://localhost:8080
+   ```
+
+3. Cloudflared will print a public `https://<random>.trycloudflare.com` URL — share it with anyone.
+
+4. Press `Ctrl+C` to stop the tunnel when you're done.
 
 ### 4. Create an admin user
 

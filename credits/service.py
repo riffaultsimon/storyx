@@ -13,11 +13,11 @@ def check_balance(db: Session, user_id: str) -> int:
     return user.credit_balance if user else 0
 
 
-def deduct_credit(db: Session, user_id: str, story_id: str) -> bool:
-    """Deduct 1 credit for story generation. Returns False if insufficient balance."""
+def deduct_credit(db: Session, user_id: str, story_id: str | None = None) -> Transaction | None:
+    """Deduct 1 credit for story generation. Returns the Transaction, or None if insufficient balance."""
     user = db.query(User).filter(User.id == user_id).with_for_update().first()
     if not user or user.credit_balance < 1:
-        return False
+        return None
 
     user.credit_balance -= 1
 
@@ -31,7 +31,8 @@ def deduct_credit(db: Session, user_id: str, story_id: str) -> bool:
     )
     db.add(txn)
     db.commit()
-    return True
+    db.refresh(txn)
+    return txn
 
 
 def add_credits(

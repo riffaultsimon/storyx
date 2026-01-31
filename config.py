@@ -62,7 +62,7 @@ EMOTIONS = [
 AGE_RANGES = ["3-5", "6-8", "9-12"]
 
 # Story lengths
-STORY_LENGTHS = ["short", "medium", "long"]
+STORY_LENGTHS = ["short", "medium", "long", "very long"]
 
 # Moods
 MOODS = ["adventurous", "funny", "heartwarming", "mysterious", "educational", "calming"]

@@ -103,6 +103,30 @@ def inject_custom_css():
             border-color: #FF6B6B;
             box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
         }
+
+        @keyframes storyx-pulse {
+            0%, 100% { text-shadow: 0 0 8px rgba(255, 140, 0, 0.4); transform: scale(1); }
+            50% { text-shadow: 0 0 24px rgba(255, 140, 0, 0.9), 0 0 48px rgba(255, 107, 107, 0.4); transform: scale(1.08); }
+        }
+
+        .storyx-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem 0;
+        }
+
+        .storyx-loader .octopus {
+            font-size: 3rem;
+            animation: storyx-pulse 1.4s ease-in-out infinite;
+        }
+
+        .storyx-loader .loader-text {
+            color: #636E72;
+            font-size: 1rem;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+        }
         </style>
         """,
         unsafe_allow_html=True,

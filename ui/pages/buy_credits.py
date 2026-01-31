@@ -6,6 +6,7 @@ from credits.stripe_checkout import create_checkout_session
 from config import STRIPE_SECRET_KEY
 from db.session import SessionLocal
 from i18n import t
+from ui.loader import storyx_loader
 
 
 def show_buy_credits_page():
@@ -36,7 +37,7 @@ def show_buy_credits_page():
                 f"{t('credits.per_credit', price=per_credit)}"
             )
             if st.button(t("credits.btn_buy", credits=pack['credits']), key=f"buy_{pack['credits']}"):
-                with st.spinner(t("credits.redirecting")):
+                with storyx_loader(t("credits.redirecting")):
                     url = create_checkout_session(
                         st.session_state["user_id"],
                         pack["credits"],

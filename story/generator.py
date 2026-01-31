@@ -6,6 +6,13 @@ from openai import OpenAI
 from config import OPENAI_API_KEY, STORY_MODEL, EMOTIONS
 from story.schema import StructuredStory
 
+LANGUAGE_NAMES = {
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+}
+
 logger = logging.getLogger(__name__)
 
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -48,6 +55,8 @@ Rules:
 - Use appropriate pauses: shorter (200ms) mid-dialog, longer (600-800ms) between scenes
 - Keep language age-appropriate for the specified age range
 - Include a narrator character in the characters list with name "Narrator"
+- IMPORTANT: Write the ENTIRE story (title, summary, character descriptions, all segment text, and moral) \
+in the language specified by the user. Every piece of text content must be in the requested language.
 """.replace("EMOTIONS_LIST", ", ".join(EMOTIONS))
 
 
@@ -58,19 +67,25 @@ def generate_story(
     age_range: str,
     story_length: str,
     model_override: str | None = None,
+    language: str = "en",
 ) -> tuple[StructuredStory, dict]:
     length_guide = {
         "short": "8-12 segments",
         "medium": "15-25 segments",
         "long": "30-45 segments",
+        "very long": "50-70 segments",
     }
 
+    lang_name = LANGUAGE_NAMES.get(language, "English")
+
     user_prompt = (
+        f"Write the story entirely in {lang_name}. "
         f"Write a {mood} children's story about '{topic}' "
         f"set in {setting}. "
         f"Target age range: {age_range} years old. "
         f"Story length: {story_length} ({length_guide.get(story_length, '15-25 segments')}). "
-        f"Include at least 2-3 named characters with dialog."
+        f"Include at least 2-3 named characters with dialog. "
+        f"All text content (title, summary, descriptions, dialog, narration, moral) MUST be in {lang_name}."
     )
 
     model = model_override or STORY_MODEL
