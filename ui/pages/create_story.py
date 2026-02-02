@@ -135,18 +135,45 @@ def _show_story_preview():
         for ch in structured.characters:
             st.markdown(f"- **{ch.name}** (age {ch.age}, {ch.gender}): {ch.description}")
 
+    # Build a stable color map for characters
+    _CHAR_COLORS = [
+        "#E17055", "#00B894", "#6C5CE7", "#FDCB6E",
+        "#00CEC9", "#D63031", "#A29BFE", "#FF7675",
+    ]
+    char_names = list(dict.fromkeys(
+        seg.character for seg in structured.segments if seg.character
+    ))
+    char_color_map = {
+        name: _CHAR_COLORS[i % len(_CHAR_COLORS)]
+        for i, name in enumerate(char_names)
+    }
+
     with st.expander(t("create.segments"), expanded=True):
         edited_segments = []
         for seg in structured.segments:
             if seg.type == "narration":
-                label = f"*{t('create.seg_narration')}* #{seg.segment_id}"
+                badge_html = (
+                    f'<span class="seg-badge seg-narrator">'
+                    f'&#128214; {t("create.seg_narration")} #{seg.segment_id}'
+                    f'</span>'
+                )
+                label = f"{t('create.seg_narration')} #{seg.segment_id}"
             else:
-                label = f"**{seg.character}** ({seg.emotion}) #{seg.segment_id}"
+                color = char_color_map.get(seg.character, "#636E72")
+                badge_html = (
+                    f'<span class="seg-badge" style="background:{color};">'
+                    f'&#128172; {seg.character} ({seg.emotion}) #{seg.segment_id}'
+                    f'</span>'
+                )
+                label = f"{seg.character} ({seg.emotion}) #{seg.segment_id}"
+
+            st.markdown(badge_html, unsafe_allow_html=True)
 
             col_text, col_rec = st.columns([3, 1])
             with col_text:
                 new_text = st.text_area(
-                    label, value=seg.text, key=f"seg_{seg.segment_id}", height=80,
+                    label, value=seg.text, key=f"seg_{seg.segment_id}",
+                    height=80, label_visibility="collapsed",
                 )
             with col_rec:
                 rec_key = f"rec_{seg.segment_id}"

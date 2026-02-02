@@ -127,6 +127,21 @@ def inject_custom_css():
             font-size: 1rem;
             font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
         }
+
+        .seg-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+            margin-bottom: 0.25rem;
+            color: white;
+        }
+
+        .seg-narrator {
+            background: #636E72;
+        }
         </style>
         """,
         unsafe_allow_html=True,
