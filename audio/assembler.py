@@ -26,7 +26,8 @@ def assemble_audio(segments: list[dict], output_path: str, tags: dict | None = N
         if not audio_bytes:
             chunk = AudioSegment.silent(duration=500)
         else:
-            chunk = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
+            fmt = seg.get("format", "mp3")
+            chunk = AudioSegment.from_file(io.BytesIO(audio_bytes), format=fmt)
 
         # Initialise combined from first real segment to inherit its sample rate/channels
         if combined is None:

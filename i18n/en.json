@@ -78,6 +78,8 @@
   "create.check_library": "Check your library for progress.",
   "create.save_failed": "Failed to save story: {error}",
   "create.insufficient": "Insufficient credits. Please buy more credits.",
+  "create.record_voice": "Record your voice (optional)",
+  "create.recording_saved": "Your recording",
 
   "library.header": "My Library",
   "library.empty": "You haven't created any stories yet. Go to 'Create Story' to get started!",

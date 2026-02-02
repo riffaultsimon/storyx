@@ -35,11 +35,16 @@ def _process_tts(story_id: str, structured_story: StructuredStory):
 
         output_path = os.path.join(audio_dir, f"{story_id}.mp3")
 
-        # Synthesize all segments
+        # Synthesize all segments (skip TTS for user-recorded segments)
         logger.info("Starting TTS synthesis for story %s", story_id)
         from db.settings import get_settings
         settings = get_settings(db)
-        segments, total_tts_chars = synthesize_story(structured_story, tts_model=settings.tts_model)
+        recordings = story.user_recordings or {}
+        # Keys come from JSON as strings; convert to int for segment_id lookup
+        recordings = {int(k): v for k, v in recordings.items()} if recordings else {}
+        segments, total_tts_chars = synthesize_story(
+            structured_story, tts_model=settings.tts_model, recordings=recordings,
+        )
 
         # Assemble into MP3 with ID3 tags for player compatibility
         audio_tags = {

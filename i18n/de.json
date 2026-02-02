@@ -78,6 +78,8 @@
   "create.check_library": "Pruefe den Fortschritt in deiner Bibliothek.",
   "create.save_failed": "Speichern der Geschichte fehlgeschlagen: {error}",
   "create.insufficient": "Nicht genuegend Credits. Bitte kaufe weitere Credits.",
+  "create.record_voice": "Stimme aufnehmen (optional)",
+  "create.recording_saved": "Deine Aufnahme",
 
   "library.header": "Meine Bibliothek",
   "library.empty": "Du hast noch keine Geschichten erstellt. Gehe zu 'Geschichte erstellen', um loszulegen!",

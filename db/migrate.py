@@ -46,6 +46,7 @@ def run_migrations():
                 "segment_count": "INTEGER DEFAULT 0",
                 "total_tts_chars": "INTEGER DEFAULT 0",
                 "bgm_path": "VARCHAR(500)",
+                "user_recordings": "TEXT",
             }
             for col_name, col_type in story_columns.items():
                 if not _column_exists(inspector, "stories", col_name):

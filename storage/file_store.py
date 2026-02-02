@@ -44,6 +44,16 @@ def get_cover_path(story_id: str) -> str | None:
     return path if os.path.exists(path) else None
 
 
+def save_recording(story_id: str, segment_id: int, audio_bytes: bytes) -> str:
+    """Write a user voice recording to disk and return the file path."""
+    rec_dir = _ensure_dir(os.path.join("recordings", story_id))
+    file_path = os.path.join(rec_dir, f"{segment_id}.wav")
+    with open(file_path, "wb") as f:
+        f.write(audio_bytes)
+    logger.info("Saved recording: %s", file_path)
+    return file_path
+
+
 def read_file_bytes(path: str) -> bytes | None:
     """Read a file and return its bytes, or None if not found."""
     if path and os.path.exists(path):

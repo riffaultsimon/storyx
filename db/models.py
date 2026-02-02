@@ -90,6 +90,7 @@ class Story(Base):
     cost_total = Column(Float, default=0.0)
     segment_count = Column(Integer, default=0)
     total_tts_chars = Column(Integer, default=0)
+    user_recordings = Column(JSONField, nullable=True)
 
     user = relationship("User", back_populates="stories")
     transactions = relationship("Transaction", back_populates="story")

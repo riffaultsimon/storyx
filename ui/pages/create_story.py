@@ -8,7 +8,7 @@ from db.models import Story
 from db.session import SessionLocal
 from story.generator import generate_story
 from story.cover import generate_cover_image
-from storage.file_store import download_and_save_image
+from storage.file_store import download_and_save_image, save_recording
 from workers.story_worker import submit_tts_job
 from credits.service import check_balance, deduct_credit
 from credits.cost_tracker import (
@@ -142,9 +142,21 @@ def _show_story_preview():
                 label = f"*{t('create.seg_narration')}* #{seg.segment_id}"
             else:
                 label = f"**{seg.character}** ({seg.emotion}) #{seg.segment_id}"
-            new_text = st.text_area(
-                label, value=seg.text, key=f"seg_{seg.segment_id}", height=80,
-            )
+
+            col_text, col_rec = st.columns([3, 1])
+            with col_text:
+                new_text = st.text_area(
+                    label, value=seg.text, key=f"seg_{seg.segment_id}", height=80,
+                )
+            with col_rec:
+                rec_key = f"rec_{seg.segment_id}"
+                recording = st.audio_input(
+                    t("create.record_voice"), key=rec_key,
+                )
+                if recording:
+                    st.audio(recording, format="audio/wav")
+                    st.caption(t("create.recording_saved"))
+
             edited_segments.append((seg.segment_id, new_text))
 
     col_save, col_discard = st.columns(2)
@@ -174,6 +186,14 @@ def _save_and_generate(structured, params):
     try:
         story_id = str(uuid.uuid4())
         user_id = st.session_state["user_id"]
+
+        # Collect user voice recordings from session state
+        recordings = {}
+        for seg in structured.segments:
+            rec = st.session_state.get(f"rec_{seg.segment_id}")
+            if rec:
+                path = save_recording(story_id, seg.segment_id, rec.read())
+                recordings[seg.segment_id] = path
 
         # Deduct credit (story_id=None because the story row doesn't exist yet;
         # we link the transaction to the story after it is committed)
@@ -233,6 +253,7 @@ def _save_and_generate(structured, params):
             cost_story_generation=round(gen_cost, 6),
             cost_cover_image=round(cover_cost, 6),
             segment_count=len(structured.segments),
+            user_recordings=recordings if recordings else None,
         )
         db.add(story)
         db.commit()

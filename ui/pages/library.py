@@ -1,12 +1,14 @@
 import base64
 import os
 import re
+import shutil
 
 import streamlit as st
 
 from db.models import Story
 from db.session import SessionLocal
 from storage.file_store import read_file_bytes
+from config import STORAGE_DIR
 from i18n import t
 
 
@@ -93,6 +95,11 @@ def _handle_delete(db):
                     os.remove(path)
                 except OSError:
                     pass
+        # Clean up user recordings directory
+        if story.user_recordings:
+            rec_dir = os.path.join(STORAGE_DIR, "recordings", story.id)
+            if os.path.isdir(rec_dir):
+                shutil.rmtree(rec_dir, ignore_errors=True)
         db.delete(story)
         db.commit()
         st.success(t("library.deleted", title=story.title))
