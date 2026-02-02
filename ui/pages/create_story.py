@@ -43,13 +43,15 @@ def show_create_story_page():
         col1, col2 = st.columns(2)
 
         with col1:
-            topic = st.text_input(
+            topic = st.text_area(
                 t("create.topic_label"),
                 placeholder=t("create.topic_placeholder"),
+                height=100,
             )
-            setting = st.text_input(
+            setting = st.text_area(
                 t("create.setting_label"),
                 placeholder=t("create.setting_placeholder"),
+                height=100,
             )
             mood = st.selectbox(
                 t("create.mood"),
@@ -116,27 +118,48 @@ def _show_story_preview():
     structured = st.session_state["preview_story"]
     params = st.session_state["story_params"]
 
-    st.markdown(f"### {structured.title}")
-    st.markdown(f"*{structured.summary}*")
+    st.markdown(f"### {t('create.preview_title')}")
+    st.caption(t("create.preview_hint"))
 
-    if structured.moral:
-        st.info(t("create.moral", moral=structured.moral))
+    edited_title = st.text_input(
+        t("create.edit_title"), value=structured.title, key="edit_title",
+    )
+    edited_summary = st.text_area(
+        t("create.edit_summary"), value=structured.summary, key="edit_summary", height=80,
+    )
+    edited_moral = st.text_input(
+        t("create.edit_moral"), value=structured.moral or "", key="edit_moral",
+    )
 
     with st.expander(t("create.characters"), expanded=False):
         for ch in structured.characters:
             st.markdown(f"- **{ch.name}** (age {ch.age}, {ch.gender}): {ch.description}")
 
     with st.expander(t("create.segments"), expanded=True):
+        edited_segments = []
         for seg in structured.segments:
             if seg.type == "narration":
-                st.markdown(f"*{seg.text}*")
+                label = f"*{t('create.seg_narration')}* #{seg.segment_id}"
             else:
-                st.markdown(f"**{seg.character}** ({seg.emotion}): \"{seg.text}\"")
+                label = f"**{seg.character}** ({seg.emotion}) #{seg.segment_id}"
+            new_text = st.text_area(
+                label, value=seg.text, key=f"seg_{seg.segment_id}", height=80,
+            )
+            edited_segments.append((seg.segment_id, new_text))
 
     col_save, col_discard = st.columns(2)
 
     with col_save:
         if st.button(t("create.btn_save")):
+            # Apply edits back to the structured story
+            structured.title = edited_title.strip() or structured.title
+            structured.summary = edited_summary.strip() or structured.summary
+            structured.moral = edited_moral.strip() or None
+            for seg_id, new_text in edited_segments:
+                seg = next((s for s in structured.segments if s.segment_id == seg_id), None)
+                if seg and new_text.strip():
+                    seg.text = new_text.strip()
+            st.session_state["preview_story"] = structured
             _save_and_generate(structured, params)
 
     with col_discard:
