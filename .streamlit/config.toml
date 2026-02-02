@@ -6,4 +6,12 @@ textColor = "#2D3436"
 font = "sans serif"
 
 [server]
+port = 8080
+address = "0.0.0.0"
+headless = true
+enableCORS = false
+enableXsrfProtection = false
 maxUploadSize = 50
+
+[browser]
+gatherUsageStats = false
