@@ -63,6 +63,12 @@ def show_login_page():
             reg_password = st.text_input(t("login.password"), type="password", key="reg_password")
             reg_confirm = st.text_input(t("login.confirm_password"), type="password", key="reg_confirm")
             accept_terms = st.checkbox(t("login.accept_terms"), key="accept_terms")
+            with st.expander(t("login.read_terms")):
+                st.markdown(t("terms.section_a"))
+                st.markdown(t("terms.section_b"))
+                st.markdown(t("terms.section_c"))
+                st.markdown(t("terms.section_d"))
+                st.caption(t("terms.last_updated"))
             reg_submitted = st.form_submit_button(t("login.btn_register"))
 
             if reg_submitted:

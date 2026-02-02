@@ -24,41 +24,43 @@ st.set_page_config(
 inject_custom_css()
 init_db()
 
-# --- REUSABLE MOSAIC TILE COMPONENT ---
-def nav_tile(label, icon, target_page):
-    """Creates a square-ish orange tile for sidebar navigation."""
+# --- REUSABLE NAV ITEM COMPONENT ---
+def nav_item(label, icon, target_page):
+    """Creates an icon + label row for sidebar navigation."""
     is_active = st.session_state.get("page") == target_page
 
-    # Orange shades: Bright for active, slightly deeper for inactive
-    bg_color = "#FF8C00" if is_active else "#E67E22"
-    border_style = "2px solid white" if is_active else "1px solid rgba(255,255,255,0.1)"
+    bg = "rgba(255, 140, 0, 0.15)" if is_active else "transparent"
+    border_left = "3px solid #FF8C00" if is_active else "3px solid transparent"
+    text_color = "#FF8C00" if is_active else "#5D4E37"
+    font_weight = "700" if is_active else "500"
 
     with stylable_container(
-        key=f"nav_container_{target_page}",
+        key=f"nav_{target_page}",
         css_styles=f"""
             button {{
-                background-color: {bg_color};
-                color: white;
-                border-radius: 12px;
-                height: 90px;
+                background: {bg} !important;
+                border: none !important;
+                border-left: {border_left} !important;
+                border-radius: 0 8px 8px 0 !important;
                 width: 100%;
-                border: {border_style} !important;
-                margin-bottom: 4px;
-                transition: all 0.2s ease-in-out;
+                padding: 0.55rem 0.75rem !important;
+                margin-bottom: 2px;
+                text-align: left !important;
+                transition: all 0.15s ease;
             }}
             button:hover {{
-                background-color: #FFA502 !important;
-                transform: scale(1.03);
-                border: 2px solid white !important;
+                background: rgba(255, 140, 0, 0.10) !important;
+                border-left: 3px solid #FFA502 !important;
             }}
             button p {{
-                font-weight: bold;
-                font-size: 1rem;
-                white-space: pre-line;
+                color: {text_color} !important;
+                font-weight: {font_weight};
+                font-size: 0.9rem;
+                margin: 0 !important;
             }}
         """,
     ):
-        if st.button(f"{icon}\n{label}", key=f"btn_{target_page}"):
+        if st.button(f"{icon}  {label}", key=f"btn_{target_page}"):
             st.session_state.page = target_page
             st.rerun()
 
@@ -128,21 +130,14 @@ else:
         st.info(t("app.balance", balance=balance))
         st.divider()
 
-        # Mosaic Grid Layout
-        st.write(f"### {t('app.menu')}")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            nav_tile(t("app.nav.create"), "✍️", "Create Story")
-            nav_tile(t("app.nav.credits"), "💳", "Buy Credits")
-            # Admin tile appears in the left column if user is admin
-            if st.session_state.get("is_admin"):
-                nav_tile(t("app.nav.admin"), "🔐", "Admin")
-
-        with col2:
-            nav_tile(t("app.nav.library"), "📚", "My Library")
-            nav_tile(t("app.nav.account"), "👤", "Account")
-            nav_tile(t("app.nav.terms"), "📜", "Terms")
+        # Navigation List
+        nav_item(t("app.nav.create"), "✍️", "Create Story")
+        nav_item(t("app.nav.library"), "📚", "My Library")
+        nav_item(t("app.nav.credits"), "💳", "Buy Credits")
+        nav_item(t("app.nav.account"), "👤", "Account")
+        nav_item(t("app.nav.terms"), "📜", "Terms")
+        if st.session_state.get("is_admin"):
+            nav_item(t("app.nav.admin"), "🔐", "Admin")
 
         st.divider()
 

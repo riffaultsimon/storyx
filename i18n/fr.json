@@ -28,6 +28,7 @@
   "login.pw_too_short": "Le mot de passe doit contenir au moins 6 caractères.",
   "login.register_ok": "Compte créé ! Vous pouvez maintenant vous connecter.",
   "login.accept_terms": "J'accepte les Conditions Générales d'Utilisation",
+  "login.read_terms": "📜 Lire les Conditions Générales d'Utilisation",
   "login.terms_required": "Vous devez accepter les Conditions Générales d'Utilisation pour vous inscrire.",
   "login.already_taken": "E-mail ou nom d'utilisateur déjà utilisé.",
 

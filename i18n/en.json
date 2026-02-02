@@ -28,6 +28,7 @@
   "login.pw_too_short": "Password must be at least 6 characters.",
   "login.register_ok": "Account created! You can now log in.",
   "login.accept_terms": "I accept the Terms & Conditions",
+  "login.read_terms": "📜 Read the Terms & Conditions",
   "login.terms_required": "You must accept the Terms & Conditions to register.",
   "login.already_taken": "Email or username already taken.",
 

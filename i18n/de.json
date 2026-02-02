@@ -28,6 +28,7 @@
   "login.pw_too_short": "Passwort muss mindestens 6 Zeichen lang sein.",
   "login.register_ok": "Konto erstellt! Du kannst dich jetzt anmelden.",
   "login.accept_terms": "Ich akzeptiere die Allgemeinen Geschaeftsbedingungen",
+  "login.read_terms": "📜 Allgemeine Geschaeftsbedingungen lesen",
   "login.terms_required": "Du musst die Allgemeinen Geschaeftsbedingungen akzeptieren, um dich zu registrieren.",
   "login.already_taken": "E-Mail oder Benutzername bereits vergeben.",
 

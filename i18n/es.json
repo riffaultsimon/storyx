@@ -28,6 +28,7 @@
   "login.pw_too_short": "La contraseña debe tener al menos 6 caracteres.",
   "login.register_ok": "¡Cuenta creada! Ya puedes iniciar sesión.",
   "login.accept_terms": "Acepto los Términos y Condiciones",
+  "login.read_terms": "📜 Leer los Términos y Condiciones",
   "login.terms_required": "Debes aceptar los Términos y Condiciones para registrarte.",
   "login.already_taken": "El correo electrónico o nombre de usuario ya está en uso.",
 

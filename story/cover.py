@@ -17,12 +17,14 @@ logger = logging.getLogger(__name__)
 
 def _build_prompt(summary: str) -> str:
     return (
-        f"A colorful, whimsical children's book illustration. "
+        f"A wordless children's book illustration with zero text anywhere. "
         f"Scene: {summary}. "
-        "Style: cartoon, vibrant pastel colors, friendly characters, "
+        "Style: hand-painted watercolor cartoon, vibrant pastel colors, friendly characters, "
         "rounded shapes, magical atmosphere, suitable for young children. "
-        "The image is purely visual with absolutely no text, no letters, "
-        "no words, no titles, no writing, no typography anywhere in the image."
+        "CRITICAL: This is a purely visual, textless illustration — "
+        "there are no words, letters, numbers, titles, labels, signs, banners, "
+        "speech bubbles, captions, or any form of writing visible anywhere in the image. "
+        "Every surface is clean of typography."
     )
 
 
