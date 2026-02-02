@@ -80,6 +80,13 @@
   "create.insufficient": "Nicht genuegend Credits. Bitte kaufe weitere Credits.",
   "create.record_voice": "Stimme aufnehmen (optional)",
   "create.recording_saved": "Deine Aufnahme",
+  "create.voice_effect": "Stimmeffekt",
+  "create.fx_clean": "Normal",
+  "create.fx_robot": "Roboter",
+  "create.fx_fairy": "Fee",
+  "create.fx_monster": "Monster",
+  "create.fx_echo": "Echo / Hoehle",
+  "create.fx_underwater": "Unterwasser",
 
   "library.header": "Meine Bibliothek",
   "library.empty": "Du hast noch keine Geschichten erstellt. Gehe zu 'Geschichte erstellen', um loszulegen!",

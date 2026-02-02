@@ -9,6 +9,7 @@ from db.session import SessionLocal
 from story.generator import generate_story
 from story.cover import generate_cover_image
 from storage.file_store import download_and_save_image, save_recording
+from audio.effects import apply_effect
 from workers.story_worker import submit_tts_job
 from credits.service import check_balance, deduct_credit
 from credits.cost_tracker import (
@@ -176,6 +177,16 @@ def _show_story_preview():
                     height=80, label_visibility="collapsed",
                 )
             with col_rec:
+                fx_options = [
+                    "clean", "robot", "fairy", "monster", "echo", "underwater",
+                ]
+                fx_labels = [t(f"create.fx_{fx}") for fx in fx_options]
+                st.selectbox(
+                    t("create.voice_effect"),
+                    options=fx_options,
+                    format_func=lambda v, _l=fx_labels, _o=fx_options: _l[_o.index(v)],
+                    key=f"fx_{seg.segment_id}",
+                )
                 rec_key = f"rec_{seg.segment_id}"
                 recording = st.audio_input(
                     t("create.record_voice"), key=rec_key,
@@ -219,7 +230,11 @@ def _save_and_generate(structured, params):
         for seg in structured.segments:
             rec = st.session_state.get(f"rec_{seg.segment_id}")
             if rec:
-                path = save_recording(story_id, seg.segment_id, rec.read())
+                raw_bytes = rec.read()
+                fx = st.session_state.get(f"fx_{seg.segment_id}", "clean")
+                if fx and fx.lower() != "clean":
+                    raw_bytes = apply_effect(raw_bytes, fx)
+                path = save_recording(story_id, seg.segment_id, raw_bytes)
                 recordings[seg.segment_id] = path
 
         # Deduct credit (story_id=None because the story row doesn't exist yet;
