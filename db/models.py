@@ -113,6 +113,15 @@ class Transaction(Base):
     story = relationship("Story", back_populates="transactions")
 
 
+class LoginAttempt(Base):
+    __tablename__ = "login_attempts"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    email = Column(String(255), nullable=False, index=True)
+    attempted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    success = Column(Boolean, nullable=False)
+
+
 class AppSettings(Base):
     """Singleton settings table — always exactly one row with id='default'."""
     __tablename__ = "app_settings"

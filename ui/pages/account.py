@@ -70,7 +70,7 @@ def show_account_page():
                     st.error(t("account.fill_all"))
                 elif new_pw != confirm_pw:
                     st.error(t("account.pw_mismatch"))
-                elif len(new_pw) < 6:
+                elif len(new_pw) < 8:
                     st.error(t("account.pw_too_short"))
                 elif not verify_password(current_pw, user.password_hash):
                     st.error(t("account.pw_incorrect"))

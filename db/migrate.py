@@ -102,4 +102,19 @@ def run_migrations():
                     ))
                     logger.info("Added app_settings.%s column", col_name)
 
+        # --- Login Attempts table ---
+        if not _table_exists(inspector, "login_attempts"):
+            conn.execute(text("""
+                CREATE TABLE login_attempts (
+                    id VARCHAR(36) PRIMARY KEY,
+                    email VARCHAR(255) NOT NULL,
+                    attempted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    success BOOLEAN NOT NULL
+                )
+            """))
+            conn.execute(text(
+                "CREATE INDEX ix_login_attempts_email ON login_attempts (email)"
+            ))
+            logger.info("Created login_attempts table")
+
     logger.info("Migrations complete")
