@@ -15,7 +15,7 @@ from i18n import t, LANGUAGES
 
 # --- CONFIGURATION ---
 st.set_page_config(
-    page_title="Storyx",
+    page_title="storyx",
     page_icon="🐙",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -99,7 +99,7 @@ else:
     # --- SIDEBAR NAVIGATION ---
     with st.sidebar:
         st.markdown(
-            '<div class="main-header"><h1 style="font-size:2.2rem; color:#FF8C00;">Storyx 🐙</h1></div>',
+            '<div class="main-header"><h1 style="font-size:2.2rem; color:#FF8C00;">storyx 🐙</h1></div>',
             unsafe_allow_html=True,
         )
         st.markdown(t("app.welcome", username=st.session_state.get('username', 'Explorer')))

@@ -12,3 +12,4 @@ stripe>=8.0.0
 google-genai>=1.0.0
 google-auth>=2.20.0
 streamlit_extras
+pedalboard >= 0.9.21
