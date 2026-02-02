@@ -26,15 +26,15 @@ _VOICE_MAP = {
 _NARRATOR_VOICE = "fable"
 
 _EMOTION_STYLE = {
-    "neutral":   "Speak in a calm and steady tone.",
-    "happy":     "Speak in a cheerful, bright tone with a smile in your voice.",
-    "sad":       "Speak in a soft, melancholic tone with gentle pacing.",
-    "excited":   "Speak in an energetic, enthusiastic tone with higher energy.",
-    "scared":    "Speak in a trembling, anxious tone, slightly shaky.",
-    "angry":     "Speak in a firm, intense tone with controlled force.",
-    "whisper":   "Speak in a soft whisper, very quiet and intimate.",
-    "gentle":    "Speak in a soothing, tender tone with warmth.",
-    "surprised": "Speak with surprise, a slight gasp, and wide-eyed wonder.",
+    "neutral":   "Speak in a natural, conversational tone with subtle warmth. Vary your pacing slightly to keep the listener engaged — don't be monotone.",
+    "happy":     "Speak with genuine joy and a bright, playful energy. Let your voice rise naturally with excitement, as if you're sharing wonderful news with a child. Smile as you speak.",
+    "sad":       "Speak softly and slowly, with a tender, bittersweet quality. Let pauses breathe. Your voice should feel heavy with emotion but still gentle, like comforting someone.",
+    "excited":   "Speak with bubbling enthusiasm and rising energy! Let your pitch climb with anticipation. Your pace should quicken naturally, like you can barely contain the thrill of what's happening.",
+    "scared":    "Speak in a hushed, trembling voice. Let your words come out slightly uneven, with nervous pauses. Your breath should feel short, as if something might jump out at any moment.",
+    "angry":     "Speak with intensity and barely contained emotion. Your voice should be firm and punchy, with sharp emphasis on key words. Keep it controlled but let the frustration bleed through.",
+    "whisper":   "Speak in a hushed, secretive whisper — as if sharing a secret with the listener. Keep it intimate and conspiratorial, barely above a breath.",
+    "gentle":    "Speak in a soft, lullaby-like tone dripping with tenderness and care. Your voice should feel like a warm hug — slow, soothing, and full of love.",
+    "surprised": "Speak with wide-eyed astonishment! Let a small gasp escape before the words. Your pitch should jump up with genuine wonder, as if you can't believe what just happened.",
 }
 
 
@@ -58,11 +58,12 @@ def build_voice_instruction(character: CharacterProfile, emotion: str) -> str:
     """Build an instruction string for the TTS model."""
     emotion_style = _EMOTION_STYLE.get(emotion, _EMOTION_STYLE["neutral"])
     return (
-        f"You are voicing a character named {character.name}, "
-        f"who is a {character.age}-year-old {character.gender}. "
+        f"You are performing the role of {character.name}, "
+        f"a {character.age}-year-old {character.gender} character in a children's story. "
         f"{character.description}. "
         f"{emotion_style} "
-        f"This is a children's story — keep the delivery engaging and age-appropriate."
+        f"Bring this character to life — use expressive vocal dynamics, natural breathing pauses, "
+        f"and age-appropriate energy. This is a performance, not a reading."
     )
 
 
@@ -74,7 +75,9 @@ def build_narrator_instruction(emotion: str = "neutral") -> str:
     """Build an instruction for narration segments."""
     emotion_style = _EMOTION_STYLE.get(emotion, _EMOTION_STYLE["neutral"])
     return (
-        f"You are a warm, engaging storyteller narrating a children's story. "
+        f"You are a beloved storyteller reading a bedtime story to a child. "
+        f"Speak with the warmth and expressiveness of a grandparent who truly loves telling stories. "
         f"{emotion_style} "
-        f"Use clear enunciation and a moderate pace suitable for young listeners."
+        f"Use dramatic pauses for suspense, shift your tone to match the scene, "
+        f"and let your voice paint the world of the story. Never sound like you're reading — sound like you're living it."
     )
