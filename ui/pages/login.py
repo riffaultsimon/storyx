@@ -62,11 +62,16 @@ def show_login_page():
             reg_username = st.text_input(t("login.username"), key="reg_username")
             reg_password = st.text_input(t("login.password"), type="password", key="reg_password")
             reg_confirm = st.text_input(t("login.confirm_password"), type="password", key="reg_confirm")
+            accept_terms = st.checkbox(t("login.accept_terms"), key="accept_terms")
             reg_submitted = st.form_submit_button(t("login.btn_register"))
 
             if reg_submitted:
                 if not reg_email or not reg_username or not reg_password:
                     st.error(t("login.fill_all"))
+                    return
+
+                if not accept_terms:
+                    st.error(t("login.terms_required"))
                     return
 
                 if reg_password != reg_confirm:

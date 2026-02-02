@@ -9,6 +9,7 @@ from ui.pages.library import show_library_page
 from ui.pages.account import show_account_page
 from ui.pages.buy_credits import show_buy_credits_page
 from ui.pages.admin import show_admin_page
+from ui.pages.terms import show_terms_page
 from credits.service import check_balance
 from i18n import t, LANGUAGES
 
@@ -141,6 +142,7 @@ else:
         with col2:
             nav_tile(t("app.nav.library"), "📚", "My Library")
             nav_tile(t("app.nav.account"), "👤", "Account")
+            nav_tile(t("app.nav.terms"), "📜", "Terms")
 
         st.divider()
 
@@ -163,3 +165,5 @@ else:
         show_account_page()
     elif page == "Admin":
         show_admin_page()
+    elif page == "Terms":
+        show_terms_page()

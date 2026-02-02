@@ -27,6 +27,8 @@
   "login.pw_mismatch": "Passwoerter stimmen nicht ueberein.",
   "login.pw_too_short": "Passwort muss mindestens 6 Zeichen lang sein.",
   "login.register_ok": "Konto erstellt! Du kannst dich jetzt anmelden.",
+  "login.accept_terms": "Ich akzeptiere die Allgemeinen Geschaeftsbedingungen",
+  "login.terms_required": "Du musst die Allgemeinen Geschaeftsbedingungen akzeptieren, um dich zu registrieren.",
   "login.already_taken": "E-Mail oder Benutzername bereits vergeben.",
 
   "create.header": "Neue Geschichte erstellen",
@@ -192,5 +194,13 @@
   "admin.google_status": "**Google SA:** {status}",
   "admin.google_api_key_status": "**Google API Key:** {status}",
   "admin.configured": "Konfiguriert",
-  "admin.missing": "Fehlt"
+  "admin.missing": "Fehlt",
+
+  "app.nav.terms": "AGB",
+  "terms.title": "Allgemeine Geschaeftsbedingungen",
+  "terms.section_a": "### A. Zweck und Akzeptanz\n\nStoryX ist eine KI-gesteuerte Plattform, die personalisierte Kindergeschichten mit Illustrationen und Audioerzaehlung erstellt. Durch die Erstellung eines Kontos und die Nutzung des Dienstes akzeptieren Sie diese Allgemeinen Geschaeftsbedingungen vollstaendig.\n\nAlle auf StoryX generierten Inhalte werden von Modellen kuenstlicher Intelligenz erstellt. Die Plattform wird \"wie besehen\" bereitgestellt und dient Unterhaltungs- und Bildungszwecken.",
+  "terms.section_b": "### B. Geistiges Eigentum\n\nAlle ueber StoryX generierten Geschichten, Illustrationen und Audioinhalte gehoeren dem Benutzer, der sie erstellt hat. Sie koennen Ihre generierten Geschichten fuer persoenliche, nicht-kommerzielle Zwecke frei verwenden, teilen und verbreiten.\n\nDurch die Nutzung der Plattform gewaehren Sie StoryX eine nicht-exklusive, gebuehrenfreie Lizenz zur Speicherung und Anzeige Ihrer generierten Inhalte innerhalb der Plattform zum Zweck der Bereitstellung des Dienstes.\n\nDie Marke StoryX, der Quellcode, die KI-Modelle und die zugrunde liegende Technologie bleiben das ausschliessliche Eigentum ihrer jeweiligen Eigentuemer. Es werden keine Rechte an diesen Elementen auf die Benutzer uebertragen.",
+  "terms.section_c": "### C. Haftung und KI-Einschraenkungen\n\nStoryX verwendet kuenstliche Intelligenz zur Erstellung von Inhalten. Daher gilt:\n\n- **Keine Garantie fuer Richtigkeit:** KI-generierte Inhalte koennen Fehler, Inkonsistenzen oder unerwartete Elemente enthalten (allgemein als \"Halluzinationen\" bekannt).\n- **Elterliche Aufsicht erforderlich:** Geschichten sind fuer Kinder konzipiert, aber eine elterliche Ueberpruefung der generierten Inhalte wird empfohlen, bevor sie mit Minderjaehrigen geteilt werden.\n- **Keine Haftung fuer KI-Ausgabe:** StoryX und seine Betreiber koennen nicht fuer die von KI-Modellen generierten Inhalte haftbar gemacht werden, einschliesslich Ungenauigkeiten oder unangemessener Inhalte, die gelegentlich erzeugt werden koennen.\n- **Serviceverfuegbarkeit:** Wir bemuehen uns um einen kontinuierlichen Dienst, koennen jedoch keine ununterbrochene Verfuegbarkeit garantieren.",
+  "terms.section_d": "### D. Schutz von Minderjaehrigen\n\nIn Uebereinstimmung mit belgischem Recht und europaeischen Vorschriften:\n\n- Benutzer muessen mindestens **13 Jahre alt** sein, um ein Konto auf StoryX zu erstellen.\n- Kinder unter 13 Jahren duerfen die Plattform nur ueber ein Konto nutzen, das von einem Elternteil oder Erziehungsberechtigten erstellt und betreut wird.\n- Eltern und Erziehungsberechtigte sind fuer die Beaufsichtigung der Nutzung der Plattform durch ihre Kinder und die Ueberpruefung der generierten Inhalte verantwortlich.\n- StoryX sammelt wissentlich keine personenbezogenen Daten von Kindern unter 13 Jahren ohne elterliche Zustimmung.",
+  "terms.last_updated": "Letzte Aktualisierung: Februar 2026"
 }

@@ -27,6 +27,8 @@
   "login.pw_mismatch": "Les mots de passe ne correspondent pas.",
   "login.pw_too_short": "Le mot de passe doit contenir au moins 6 caractères.",
   "login.register_ok": "Compte créé ! Vous pouvez maintenant vous connecter.",
+  "login.accept_terms": "J'accepte les Conditions Générales d'Utilisation",
+  "login.terms_required": "Vous devez accepter les Conditions Générales d'Utilisation pour vous inscrire.",
   "login.already_taken": "E-mail ou nom d'utilisateur déjà utilisé.",
 
   "create.header": "Créer une nouvelle histoire",
@@ -192,5 +194,13 @@
   "admin.google_status": "**Google SA :** {status}",
   "admin.google_api_key_status": "**Google API Key :** {status}",
   "admin.configured": "Configurée",
-  "admin.missing": "Manquante"
+  "admin.missing": "Manquante",
+
+  "app.nav.terms": "CGU",
+  "terms.title": "Conditions Générales d'Utilisation",
+  "terms.section_a": "### A. Objet et Acceptation\n\nStoryX est une plateforme alimentée par l'intelligence artificielle qui génère des histoires personnalisées pour enfants avec des illustrations et une narration audio. En créant un compte et en utilisant le service, vous acceptez les présentes Conditions Générales d'Utilisation dans leur intégralité.\n\nTous les contenus générés sur StoryX sont produits par des modèles d'intelligence artificielle. La plateforme est fournie « en l'état » et est destinée à des fins de divertissement et d'éducation.",
+  "terms.section_b": "### B. Propriété Intellectuelle\n\nToutes les histoires, illustrations et contenus audio générés via StoryX appartiennent à l'utilisateur qui les a créés. Vous êtes libre d'utiliser, de partager et de distribuer vos histoires générées à des fins personnelles et non commerciales.\n\nEn utilisant la plateforme, vous accordez à StoryX une licence non exclusive et gratuite pour stocker et afficher votre contenu généré au sein de la plateforme dans le but de fournir le service.\n\nLa marque StoryX, le code source, les modèles d'IA et la technologie sous-jacente restent la propriété exclusive de leurs propriétaires respectifs. Aucun droit sur ces éléments n'est transféré aux utilisateurs.",
+  "terms.section_c": "### C. Responsabilité et Limites de l'IA\n\nStoryX utilise l'intelligence artificielle pour générer du contenu. À ce titre :\n\n- **Aucune garantie d'exactitude :** Le contenu généré par l'IA peut contenir des erreurs, des incohérences ou des éléments inattendus (communément appelés « hallucinations »).\n- **Supervision parentale requise :** Les histoires sont conçues pour les enfants, mais il est recommandé aux parents de vérifier le contenu généré avant de le partager avec des mineurs.\n- **Aucune responsabilité pour le contenu de l'IA :** StoryX et ses opérateurs ne peuvent être tenus responsables du contenu généré par les modèles d'IA, y compris les inexactitudes ou le contenu inapproprié qui pourrait occasionnellement être produit.\n- **Disponibilité du service :** Nous nous efforçons de maintenir un service continu mais ne pouvons garantir une disponibilité ininterrompue.",
+  "terms.section_d": "### D. Protection des Mineurs\n\nConformément au droit belge et aux réglementations européennes :\n\n- Les utilisateurs doivent avoir au moins **13 ans** pour créer un compte sur StoryX.\n- Les enfants de moins de 13 ans ne peuvent utiliser la plateforme que via un compte créé et supervisé par un parent ou un tuteur légal.\n- Les parents et tuteurs sont responsables de la supervision de l'utilisation de la plateforme par leurs enfants et de la vérification du contenu généré.\n- StoryX ne collecte pas sciemment de données personnelles d'enfants de moins de 13 ans sans le consentement parental.",
+  "terms.last_updated": "Dernière mise à jour : février 2026"
 }
