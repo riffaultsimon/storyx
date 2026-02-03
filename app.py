@@ -65,6 +65,46 @@ def nav_item(label, icon, target_page):
             st.rerun()
 
 # --- STRIPE REDIRECT HANDLING ---
+def _handle_stripe_return_before_login() -> bool:
+    """Check for Stripe redirect and restore session if needed.
+
+    Returns True if user session was restored from Stripe, False otherwise.
+    """
+    params = st.query_params
+    session_id = params.get("stripe_session_id")
+
+    if not session_id:
+        return False
+
+    # Already logged in - just process normally
+    if st.session_state.get("logged_in"):
+        return False
+
+    # Not logged in - try to restore session from Stripe metadata
+    from credits.stripe_checkout import get_session_user
+    from db.models import User
+
+    session_info = get_session_user(session_id)
+    if not session_info:
+        st.query_params.clear()
+        return False
+
+    # Restore user session
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.id == session_info["user_id"]).first()
+        if user:
+            st.session_state["user_id"] = str(user.id)
+            st.session_state["username"] = user.username
+            st.session_state["is_admin"] = bool(user.is_admin)
+            st.session_state["logged_in"] = True
+            return True
+    finally:
+        db.close()
+
+    return False
+
+
 def _handle_stripe_return():
     """Check for Stripe redirect and fulfill payment if present."""
     params = st.query_params
@@ -76,7 +116,12 @@ def _handle_stripe_return():
         try:
             result = verify_and_fulfill(db, session_id)
             if result:
-                st.success(t("app.payment_success", credits=result['credits']))
+                if result.get("already_fulfilled"):
+                    st.info(t("app.payment_already_processed"))
+                else:
+                    st.success(t("app.payment_success", credits=result['credits']))
+                # Navigate to Buy Credits page to show updated balance
+                st.session_state.page = "Buy Credits"
             st.query_params.clear()
         finally:
             db.close()
@@ -87,6 +132,9 @@ def _handle_stripe_return():
         st.query_params.clear()
 
 # --- MAIN APP LOGIC ---
+# Handle Stripe return before login check to restore session
+_handle_stripe_return_before_login()
+
 if not st.session_state.get("logged_in"):
     show_login_page()
 else:

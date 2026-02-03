@@ -10,6 +10,7 @@
   "app.nav.admin": "Admin",
   "app.logout": "Cerrar sesión",
   "app.payment_success": "¡Pago exitoso! Se añadieron {credits} créditos.",
+  "app.payment_already_processed": "Este pago ya ha sido procesado.",
   "app.payment_cancelled": "El pago fue cancelado.",
 
   "login.title": "StoryX",

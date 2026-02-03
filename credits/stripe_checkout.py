@@ -57,6 +57,33 @@ def create_checkout_session(user_id: str, credit_count: int) -> str | None:
     return session.url
 
 
+def get_session_user(session_id: str) -> dict | None:
+    """Retrieve user info from a Stripe session without fulfilling.
+
+    Returns dict with user_id and credits if valid paid session, else None.
+    Used to restore user session after Stripe redirect.
+    """
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+    except Exception as e:
+        logger.error("Failed to retrieve Stripe session %s: %s", session_id, e)
+        return None
+
+    if session.payment_status != "paid":
+        return None
+
+    user_id = session.metadata.get("user_id")
+    credits = int(session.metadata.get("credits", 0))
+
+    if not user_id or credits <= 0:
+        return None
+
+    return {
+        "user_id": user_id,
+        "credits": credits,
+    }
+
+
 def verify_and_fulfill(db, session_id: str) -> dict | None:
     """Retrieve a Checkout Session and fulfill if paid.
 
@@ -72,7 +99,7 @@ def verify_and_fulfill(db, session_id: str) -> dict | None:
     )
     if existing:
         logger.info("Session %s already fulfilled", session_id)
-        return None
+        return {"user_id": existing.user_id, "credits": existing.credits, "already_fulfilled": True}
 
     try:
         session = stripe.checkout.Session.retrieve(session_id)
