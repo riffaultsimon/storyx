@@ -2,7 +2,7 @@ import logging
 
 from openai import OpenAI
 
-from config import OPENAI_API_KEY, TTS_MODEL, TTS_RESPONSE_FORMAT
+from config import OPENAI_API_KEY, TTS_MODEL, TTS_RESPONSE_FORMAT, TTS_SPEED
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +29,7 @@ def synthesize(text: str, voice: str, instructions: str, model_override: str | N
         input=text,
         instructions=instructions,
         response_format=TTS_RESPONSE_FORMAT,
+        speed=TTS_SPEED,
     )
 
     audio_bytes = response.content

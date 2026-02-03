@@ -68,6 +68,7 @@ class Story(Base):
     mood = Column(String(50))
     age_range = Column(String(10))
     story_length = Column(String(20))
+    language = Column(String(10), default="en", nullable=False, server_default="en")
     story_json = Column(JSONField)
     summary = Column(Text)
     cover_image_path = Column(String(500))

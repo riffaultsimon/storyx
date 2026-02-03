@@ -25,6 +25,73 @@ _VOICE_MAP = {
 
 _NARRATOR_VOICE = "fable"
 
+# Language-specific voice maps for better pronunciation/performance.
+# Some voices work better for certain languages.
+# Voices with good multilingual support: alloy, echo, nova, coral, ash
+# Voices with weaker non-English support: fable, shimmer, onyx, ballad, sage
+
+_VOICE_MAP_FR = {
+    # French-optimized voice selection
+    ("female", "child"):   "nova",      # nova has clearer French than shimmer
+    ("female", "teen"):    "nova",
+    ("female", "adult"):   "coral",
+    ("female", "elder"):   "coral",     # coral instead of sage for better French
+    ("male", "child"):     "alloy",
+    ("male", "teen"):      "echo",
+    ("male", "adult"):     "ash",
+    ("male", "elder"):     "echo",      # echo instead of onyx for clearer French
+    ("neutral", "child"):  "nova",
+    ("neutral", "teen"):   "alloy",
+    ("neutral", "adult"):  "alloy",     # alloy instead of ballad
+    ("neutral", "elder"):  "coral",
+}
+
+_VOICE_MAP_DE = {
+    # German-optimized voice selection
+    ("female", "child"):   "nova",
+    ("female", "teen"):    "nova",
+    ("female", "adult"):   "coral",
+    ("female", "elder"):   "coral",
+    ("male", "child"):     "alloy",
+    ("male", "teen"):      "echo",
+    ("male", "adult"):     "ash",
+    ("male", "elder"):     "echo",
+    ("neutral", "child"):  "nova",
+    ("neutral", "teen"):   "alloy",
+    ("neutral", "adult"):  "alloy",
+    ("neutral", "elder"):  "coral",
+}
+
+_VOICE_MAP_ES = {
+    # Spanish-optimized voice selection
+    ("female", "child"):   "nova",
+    ("female", "teen"):    "nova",
+    ("female", "adult"):   "coral",
+    ("female", "elder"):   "coral",
+    ("male", "child"):     "alloy",
+    ("male", "teen"):      "echo",
+    ("male", "adult"):     "ash",
+    ("male", "elder"):     "echo",
+    ("neutral", "child"):  "nova",
+    ("neutral", "teen"):   "alloy",
+    ("neutral", "adult"):  "alloy",
+    ("neutral", "elder"):  "coral",
+}
+
+_LANGUAGE_VOICE_MAPS = {
+    "fr": _VOICE_MAP_FR,
+    "de": _VOICE_MAP_DE,
+    "es": _VOICE_MAP_ES,
+}
+
+# Narrator voices per language (better multilingual voices)
+_NARRATOR_VOICE_BY_LANG = {
+    "en": "fable",   # fable is expressive but English-focused
+    "fr": "nova",    # nova has better French narration
+    "de": "nova",
+    "es": "nova",
+}
+
 _EMOTION_STYLE = {
     "neutral":   "Speak in a natural, conversational tone with subtle warmth. Vary your pacing slightly to keep the listener engaged — don't be monotone.",
     "happy":     "Speak with genuine joy and a bright, playful energy. Let your voice rise naturally with excitement, as if you're sharing wonderful news with a child. Smile as you speak.",
@@ -48,10 +115,11 @@ def _age_bucket(age: int) -> str:
     return "elder"
 
 
-def pick_voice(character: CharacterProfile) -> str:
-    """Select an OpenAI TTS voice based on character gender and age."""
+def pick_voice(character: CharacterProfile, language: str = "en") -> str:
+    """Select an OpenAI TTS voice based on character gender, age, and language."""
     bucket = _age_bucket(character.age)
-    return _VOICE_MAP.get((character.gender, bucket), "alloy")
+    voice_map = _LANGUAGE_VOICE_MAPS.get(language, _VOICE_MAP)
+    return voice_map.get((character.gender, bucket), "alloy")
 
 
 def build_voice_instruction(character: CharacterProfile, emotion: str) -> str:
@@ -67,8 +135,9 @@ def build_voice_instruction(character: CharacterProfile, emotion: str) -> str:
     )
 
 
-def get_narrator_voice() -> str:
-    return _NARRATOR_VOICE
+def get_narrator_voice(language: str = "en") -> str:
+    """Get the narrator voice for the given language."""
+    return _NARRATOR_VOICE_BY_LANG.get(language, _NARRATOR_VOICE)
 
 
 def build_narrator_instruction(emotion: str = "neutral") -> str:

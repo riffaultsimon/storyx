@@ -43,7 +43,10 @@ def _process_tts(story_id: str, structured_story: StructuredStory):
         # Keys come from JSON as strings; convert to int for segment_id lookup
         recordings = {int(k): v for k, v in recordings.items()} if recordings else {}
         segments, total_tts_chars = synthesize_story(
-            structured_story, tts_model=settings.tts_model, recordings=recordings,
+            structured_story,
+            tts_model=settings.tts_model,
+            recordings=recordings,
+            language=story.language or "en",
         )
 
         # Assemble into MP3 with ID3 tags for player compatibility

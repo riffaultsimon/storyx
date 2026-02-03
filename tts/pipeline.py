@@ -16,6 +16,7 @@ def synthesize_story(
     story: StructuredStory,
     tts_model: str | None = None,
     recordings: dict[int, str] | None = None,
+    language: str = "en",
 ) -> tuple[list[dict], int]:
     """Synthesize all segments of a story via OpenAI TTS.
 
@@ -24,6 +25,7 @@ def synthesize_story(
         tts_model: Optional TTS model override.
         recordings: Optional mapping of segment_id → WAV file path for
             user-recorded segments that should skip TTS.
+        language: Language code for voice selection (en, fr, de, es).
 
     Returns a tuple of:
     - list of dicts: [{"audio_bytes": bytes, "pause_after_ms": int, "format": str}, ...]
@@ -31,6 +33,7 @@ def synthesize_story(
     """
     char_map = {ch.name: ch for ch in story.characters}
     recordings = recordings or {}
+    _current_language = language
 
     results = []
     total = len(story.segments)
@@ -58,7 +61,7 @@ def synthesize_story(
                     segment.segment_id, e,
                 )
 
-        voice, instructions = _resolve_voice(segment, char_map)
+        voice, instructions = _resolve_voice(segment, char_map, _current_language)
         total_tts_chars += len(segment.text)
 
         try:
@@ -79,13 +82,13 @@ def synthesize_story(
     return results, total_tts_chars
 
 
-def _resolve_voice(segment: Segment, char_map: dict) -> tuple[str, str]:
+def _resolve_voice(segment: Segment, char_map: dict, language: str = "en") -> tuple[str, str]:
     """Return (voice_name, instructions) for a segment."""
     if segment.type == "narration" or segment.character is None:
-        return get_narrator_voice(), build_narrator_instruction(segment.emotion)
+        return get_narrator_voice(language), build_narrator_instruction(segment.emotion)
 
     character = char_map.get(segment.character)
     if character is None:
-        return get_narrator_voice(), build_narrator_instruction(segment.emotion)
+        return get_narrator_voice(language), build_narrator_instruction(segment.emotion)
 
-    return pick_voice(character), build_voice_instruction(character, segment.emotion)
+    return pick_voice(character, language), build_voice_instruction(character, segment.emotion)

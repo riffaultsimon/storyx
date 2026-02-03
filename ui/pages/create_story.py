@@ -111,6 +111,7 @@ def _handle_story_generation(topic, setting, mood, age_range, story_length, lang
         "mood": mood,
         "age_range": age_range,
         "story_length": story_length,
+        "language": language,
     }
     st.rerun()
 
@@ -288,6 +289,7 @@ def _save_and_generate(structured, params):
             mood=params["mood"],
             age_range=params["age_range"],
             story_length=params["story_length"],
+            language=params.get("language", "en"),
             story_json=structured.model_dump(),
             summary=structured.summary,
             cover_image_path=cover_path,

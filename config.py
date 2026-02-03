@@ -16,6 +16,7 @@ COVER_STYLE = "vivid"
 # TTS (OpenAI)
 TTS_MODEL = "gpt-4o-mini-tts"
 TTS_RESPONSE_FORMAT = "mp3"
+TTS_SPEED = 1.15  # Speed multiplier (0.25 to 4.0, 1.0 is default)
 
 # Audio
 DEFAULT_PAUSE_MS = 400
