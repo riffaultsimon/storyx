@@ -37,6 +37,12 @@
   "login.pw_strength_medium": "Contraseña media",
   "login.pw_strength_strong": "Contraseña fuerte",
   "login.already_taken": "El correo electrónico o nombre de usuario ya está en uso.",
+  "login.google_signin": "Iniciar sesión con Google",
+  "login.google_redirect": "Redirigiendo a Google...",
+  "login.or_email": "o inicia sesión con correo",
+  "login.google_error": "Error de inicio de sesión con Google: {error}",
+  "login.google_no_code": "Error de Google: no se recibió código de autorización.",
+  "login.google_failed": "Error de inicio de sesión con Google. Inténtalo de nuevo.",
 
   "create.header": "Crear una nueva historia",
   "create.credits_remaining": "**Créditos disponibles:** {balance}",

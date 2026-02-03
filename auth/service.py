@@ -98,3 +98,61 @@ def login(db: Session, email: str, password: str) -> User | None:
 
 def get_user_by_id(db: Session, user_id) -> User | None:
     return db.query(User).filter(User.id == user_id).first()
+
+
+def get_or_create_google_user(db: Session, google_id: str, email: str, name: str) -> User:
+    """Get existing user by Google ID or email, or create a new one.
+
+    If user exists with same email but no google_id, link the accounts.
+
+    Args:
+        db: Database session.
+        google_id: Google's unique user ID.
+        email: User's email from Google.
+        name: User's display name from Google.
+
+    Returns:
+        The user object.
+    """
+    # First check if user exists by google_id
+    user = db.query(User).filter(User.google_id == google_id).first()
+    if user:
+        return user
+
+    # Check if user exists by email (might have registered with password)
+    user = db.query(User).filter(User.email == email).first()
+    if user:
+        # Link the Google account to existing user
+        user.google_id = google_id
+        db.commit()
+        db.refresh(user)
+        return user
+
+    # Create new user
+    # Generate a username from email or name
+    base_username = name.lower().replace(" ", "_") if name else email.split("@")[0]
+    username = base_username
+    counter = 1
+
+    # Ensure username is unique
+    while db.query(User).filter(User.username == username).first():
+        username = f"{base_username}_{counter}"
+        counter += 1
+
+    user = User(
+        email=email,
+        username=username,
+        password_hash=None,  # No password for OAuth-only users
+        google_id=google_id,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    # Grant free credits to new users
+    from credits.service import grant_free_credits
+    from credits.pricing import FREE_CREDITS_ON_REGISTER
+    grant_free_credits(db, user.id, FREE_CREDITS_ON_REGISTER)
+    db.refresh(user)
+
+    return user

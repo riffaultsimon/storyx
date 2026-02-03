@@ -64,6 +64,65 @@ def nav_item(label, icon, target_page):
             st.session_state.page = target_page
             st.rerun()
 
+# --- GOOGLE OAUTH HANDLING ---
+def _handle_google_callback() -> bool:
+    """Handle Google OAuth callback and log in the user.
+
+    Returns True if user was logged in via Google, False otherwise.
+    """
+    params = st.query_params
+
+    # Check if this is a Google callback
+    if not params.get("google_callback"):
+        return False
+
+    code = params.get("code")
+    error = params.get("error")
+
+    # Clear query params early
+    st.query_params.clear()
+
+    if error:
+        st.error(t("login.google_error", error=error))
+        return False
+
+    if not code:
+        st.error(t("login.google_no_code"))
+        return False
+
+    # Exchange code for user info
+    from auth.google_oauth import authenticate_with_google
+    from auth.service import get_or_create_google_user
+
+    user_info = authenticate_with_google(code)
+    if not user_info or not user_info.get("google_id"):
+        st.error(t("login.google_failed"))
+        return False
+
+    # Get or create user
+    db = SessionLocal()
+    try:
+        user = get_or_create_google_user(
+            db,
+            google_id=user_info["google_id"],
+            email=user_info["email"],
+            name=user_info.get("name", ""),
+        )
+
+        # Set session state
+        st.session_state["user_id"] = str(user.id)
+        st.session_state["username"] = user.username
+        st.session_state["is_admin"] = bool(user.is_admin)
+        st.session_state["logged_in"] = True
+
+        return True
+    except Exception as e:
+        st.error(t("login.google_failed"))
+        return False
+    finally:
+        db.close()
+
+
 # --- STRIPE REDIRECT HANDLING ---
 def _handle_stripe_return_before_login() -> bool:
     """Check for Stripe redirect and restore session if needed.
@@ -132,7 +191,8 @@ def _handle_stripe_return():
         st.query_params.clear()
 
 # --- MAIN APP LOGIC ---
-# Handle Stripe return before login check to restore session
+# Handle OAuth callbacks before login check
+_handle_google_callback()
 _handle_stripe_return_before_login()
 
 if not st.session_state.get("logged_in"):

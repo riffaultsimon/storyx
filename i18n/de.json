@@ -37,6 +37,12 @@
   "login.pw_strength_medium": "Mittleres Passwort",
   "login.pw_strength_strong": "Starkes Passwort",
   "login.already_taken": "E-Mail oder Benutzername bereits vergeben.",
+  "login.google_signin": "Mit Google anmelden",
+  "login.google_redirect": "Weiterleitung zu Google...",
+  "login.or_email": "oder mit E-Mail anmelden",
+  "login.google_error": "Google-Anmeldefehler: {error}",
+  "login.google_no_code": "Google-Anmeldung fehlgeschlagen: Kein Autorisierungscode erhalten.",
+  "login.google_failed": "Google-Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
 
   "create.header": "Neue Geschichte erstellen",
   "create.credits_remaining": "**Verbleibende Credits:** {balance}",

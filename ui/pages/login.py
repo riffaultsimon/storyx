@@ -10,6 +10,7 @@ from auth.service import (
     clear_login_attempts,
 )
 from auth.validation import is_valid_email, password_strength
+from auth.google_oauth import is_google_oauth_configured, generate_auth_url
 from i18n import t, LANGUAGES
 
 
@@ -36,6 +37,24 @@ def show_login_page():
         "</div>",
         unsafe_allow_html=True,
     )
+
+    # Google Sign-In button
+    if is_google_oauth_configured():
+        if st.button(t("login.google_signin"), type="primary", use_container_width=True):
+            auth_url, state = generate_auth_url()
+            st.session_state["oauth_state"] = state
+            st.markdown(
+                f'<meta http-equiv="refresh" content="0;url={auth_url}">',
+                unsafe_allow_html=True,
+            )
+            st.info(t("login.google_redirect"))
+            st.stop()
+
+        st.markdown(
+            '<div style="text-align: center; margin: 1rem 0; color: #888;">— ' +
+            t("login.or_email") + ' —</div>',
+            unsafe_allow_html=True,
+        )
 
     tab_login, tab_register = st.tabs([t("login.tab_login"), t("login.tab_register")])
 

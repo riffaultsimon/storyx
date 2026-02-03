@@ -37,6 +37,12 @@
   "login.pw_strength_medium": "Mot de passe moyen",
   "login.pw_strength_strong": "Mot de passe fort",
   "login.already_taken": "E-mail ou nom d'utilisateur déjà utilisé.",
+  "login.google_signin": "Se connecter avec Google",
+  "login.google_redirect": "Redirection vers Google...",
+  "login.or_email": "ou connectez-vous par e-mail",
+  "login.google_error": "Erreur de connexion Google : {error}",
+  "login.google_no_code": "Échec de la connexion Google : aucun code d'autorisation reçu.",
+  "login.google_failed": "Échec de la connexion Google. Veuillez réessayer.",
 
   "create.header": "Créer une nouvelle histoire",
   "create.credits_remaining": "**Crédits restants :** {balance}",

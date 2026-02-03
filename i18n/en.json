@@ -37,6 +37,12 @@
   "login.pw_strength_medium": "Medium password",
   "login.pw_strength_strong": "Strong password",
   "login.already_taken": "Email or username already taken.",
+  "login.google_signin": "Sign in with Google",
+  "login.google_redirect": "Redirecting to Google...",
+  "login.or_email": "or sign in with email",
+  "login.google_error": "Google sign-in error: {error}",
+  "login.google_no_code": "Google sign-in failed: no authorization code received.",
+  "login.google_failed": "Google sign-in failed. Please try again.",
 
   "create.header": "Create a New Story",
   "create.credits_remaining": "**Credits remaining:** {balance}",
