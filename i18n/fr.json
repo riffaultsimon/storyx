@@ -143,7 +143,7 @@
   "credits.balance": "**Solde actuel :** {balance} crédits",
   "credits.description": "Chaque crédit vous permet de créer une histoire complète avec illustration de couverture et audio.",
   "credits.stripe_missing": "Stripe n'est pas configuré. Veuillez définir STRIPE_SECRET_KEY dans votre environnement.",
-  "credits.per_credit": "${price} par crédit",
+  "credits.per_credit": "{price} par crédit",
   "credits.btn_buy": "Acheter {credits} crédits",
   "credits.redirecting": "Redirection vers le paiement...",
   "credits.redirect_info": "Redirection vers la page de paiement Stripe...",

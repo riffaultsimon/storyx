@@ -20,6 +20,15 @@ def show_buy_credits_page():
 
     st.markdown(t("credits.balance", balance=balance))
     st.markdown(t("credits.description"))
+
+    # Stripe logo
+    st.markdown(
+        '<div style="margin: 1rem 0;">'
+        '<img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" '
+        'alt="Powered by Stripe" style="height: 32px;">'
+        '</div>',
+        unsafe_allow_html=True,
+    )
     st.divider()
 
     if not STRIPE_SECRET_KEY:
@@ -30,10 +39,10 @@ def show_buy_credits_page():
 
     for i, pack in enumerate(CREDIT_PACKS):
         with cols[i]:
-            per_credit = f"${pack['per_credit']:.2f}"
+            per_credit = f"€{pack['per_credit']:.2f}"
             st.markdown(
                 f"### {pack['label']}\n"
-                f"**${pack['price_usd']:.2f}**\n\n"
+                f"**€{pack['price_eur']:.2f}**\n\n"
                 f"{t('credits.per_credit', price=per_credit)}"
             )
             if st.button(t("credits.btn_buy", credits=pack['credits']), key=f"buy_{pack['credits']}"):

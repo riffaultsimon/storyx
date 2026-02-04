@@ -49,7 +49,7 @@ def show_account_page():
         if transactions:
             for txn in transactions:
                 sign = "+" if txn.credits > 0 else ""
-                amount_str = f" (${txn.amount_usd:.2f})" if txn.amount_usd else ""
+                amount_str = f" (€{txn.amount_usd:.2f})" if txn.amount_usd else ""
                 st.markdown(
                     f"- **{sign}{txn.credits} credits** — {txn.description}{amount_str} "
                     f"*({txn.created_at.strftime('%Y-%m-%d %H:%M')})*"

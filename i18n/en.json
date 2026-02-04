@@ -143,7 +143,7 @@
   "credits.balance": "**Current balance:** {balance} credits",
   "credits.description": "Each credit lets you generate one complete story with cover art and audio.",
   "credits.stripe_missing": "Stripe is not configured. Please set STRIPE_SECRET_KEY in your environment.",
-  "credits.per_credit": "${price} per credit",
+  "credits.per_credit": "{price} per credit",
   "credits.btn_buy": "Buy {credits} Credits",
   "credits.redirecting": "Redirecting to checkout...",
   "credits.redirect_info": "Redirecting to Stripe checkout...",

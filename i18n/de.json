@@ -143,7 +143,7 @@
   "credits.balance": "**Aktuelles Guthaben:** {balance} Credits",
   "credits.description": "Mit jedem Credit kannst du eine komplette Geschichte mit Titelbild und Audio erstellen.",
   "credits.stripe_missing": "Stripe ist nicht konfiguriert. Bitte setze STRIPE_SECRET_KEY in deiner Umgebung.",
-  "credits.per_credit": "${price} pro Credit",
+  "credits.per_credit": "{price} pro Credit",
   "credits.btn_buy": "{credits} Credits kaufen",
   "credits.redirecting": "Weiterleitung zur Kasse...",
   "credits.redirect_info": "Weiterleitung zur Stripe-Kasse...",

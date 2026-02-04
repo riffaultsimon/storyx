@@ -39,7 +39,7 @@ def add_credits(
     db: Session,
     user_id: str,
     credits: int,
-    amount_usd: float = 0.0,
+    amount_eur: float = 0.0,
     stripe_session_id: str | None = None,
     stripe_payment_intent: str | None = None,
     description: str = "",
@@ -53,7 +53,7 @@ def add_credits(
         user_id=user_id,
         type="purchase",
         credits=credits,
-        amount_usd=amount_usd,
+        amount_usd=amount_eur,  # DB field stores EUR amount
         stripe_session_id=stripe_session_id,
         stripe_payment_intent=stripe_payment_intent,
         description=description,

@@ -120,7 +120,7 @@ def verify_and_fulfill(db, session_id: str) -> dict | None:
         return None
 
     pack = _get_pack_by_credits(credits)
-    amount_usd = pack["price_usd"] if pack else 0.0
+    amount_eur = pack["price_eur"] if pack else 0.0
 
     from credits.service import add_credits
 
@@ -128,7 +128,7 @@ def verify_and_fulfill(db, session_id: str) -> dict | None:
         db,
         user_id=user_id,
         credits=credits,
-        amount_usd=amount_usd,
+        amount_eur=amount_eur,
         stripe_session_id=session_id,
         stripe_payment_intent=payment_intent,
         description=f"Purchased {credits} credits",
@@ -137,5 +137,5 @@ def verify_and_fulfill(db, session_id: str) -> dict | None:
     return {
         "user_id": user_id,
         "credits": credits,
-        "amount_usd": amount_usd,
+        "amount_eur": amount_eur,
     }

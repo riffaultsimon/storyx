@@ -142,9 +142,9 @@ def _render_revenue(db):
     )
 
     col1, col2, col3 = st.columns(3)
-    col1.metric(t("admin.total_revenue"), f"${total_revenue:.2f}")
-    col2.metric(t("admin.revenue_7d"), f"${rev_7d:.2f}")
-    col3.metric(t("admin.revenue_30d"), f"${rev_30d:.2f}")
+    col1.metric(t("admin.total_revenue"), f"€{total_revenue:.2f}")
+    col2.metric(t("admin.revenue_7d"), f"€{rev_7d:.2f}")
+    col3.metric(t("admin.revenue_30d"), f"€{rev_30d:.2f}")
 
     # Transaction history with type filter
     st.markdown(f"### {t('admin.txn_history')}")
@@ -166,7 +166,7 @@ def _render_revenue(db):
                 "User": user.username if user else txn.user_id[:8],
                 "Type": txn.type,
                 "Credits": txn.credits,
-                "Amount": f"${txn.amount_usd:.2f}" if txn.amount_usd else "-",
+                "Amount": f"€{txn.amount_usd:.2f}" if txn.amount_usd else "-",
                 "Description": txn.description or "",
             })
         st.dataframe(txn_data, use_container_width=True)

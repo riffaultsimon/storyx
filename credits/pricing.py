@@ -3,21 +3,21 @@
 CREDIT_PACKS = [
     {
         "credits": 5,
-        "price_usd": 4.99,
+        "price_eur": 4.99,
         "per_credit": 1.00,
         "label": "5 Credits",
         "config_key": "STRIPE_PRICE_ID_5",
     },
     {
         "credits": 15,
-        "price_usd": 12.99,
+        "price_eur": 12.99,
         "per_credit": 0.87,
         "label": "15 Credits",
         "config_key": "STRIPE_PRICE_ID_15",
     },
     {
         "credits": 50,
-        "price_usd": 34.99,
+        "price_eur": 34.99,
         "per_credit": 0.70,
         "label": "50 Credits",
         "config_key": "STRIPE_PRICE_ID_50",
