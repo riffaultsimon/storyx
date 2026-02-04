@@ -54,6 +54,11 @@ class User(Base):
     is_admin = Column(Boolean, default=False, nullable=False, server_default="0")
     credit_balance = Column(Integer, default=0, nullable=False, server_default="0")
 
+    # Draft story (preserved across session loss)
+    draft_story_json = Column(JSONField, nullable=True)
+    draft_params_json = Column(JSONField, nullable=True)
+    draft_usage_json = Column(JSONField, nullable=True)
+
     stories = relationship("Story", back_populates="user", cascade="all, delete-orphan")
     transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
 

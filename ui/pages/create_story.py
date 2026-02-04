@@ -4,10 +4,11 @@ import uuid
 import streamlit as st
 
 from config import AGE_RANGES, MOODS, STORY_LENGTHS
-from db.models import Story
+from db.models import Story, User
 from db.session import SessionLocal
 from story.generator import generate_story
 from story.cover import generate_cover_image
+from story.schema import StructuredStory
 from storage.file_store import download_and_save_image, save_recording
 from audio.effects import apply_effect
 from workers.story_worker import submit_tts_job
@@ -22,13 +23,73 @@ from ui.loader import storyx_loader
 logger = logging.getLogger(__name__)
 
 
+def _save_draft(user_id: str, structured, params: dict, usage: dict):
+    """Save story draft to database to survive session loss."""
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        if user:
+            user.draft_story_json = structured.model_dump() if structured else None
+            user.draft_params_json = params
+            user.draft_usage_json = usage
+            db.commit()
+    except Exception as e:
+        logger.warning("Failed to save draft: %s", e)
+    finally:
+        db.close()
+
+
+def _load_draft(user_id: str) -> tuple:
+    """Load story draft from database. Returns (structured, params, usage) or (None, None, None)."""
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        if user and user.draft_story_json:
+            structured = StructuredStory.model_validate(user.draft_story_json)
+            params = user.draft_params_json or {}
+            usage = user.draft_usage_json or {}
+            return structured, params, usage
+    except Exception as e:
+        logger.warning("Failed to load draft: %s", e)
+    finally:
+        db.close()
+    return None, None, None
+
+
+def _clear_draft(user_id: str):
+    """Clear story draft from database."""
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        if user:
+            user.draft_story_json = None
+            user.draft_params_json = None
+            user.draft_usage_json = None
+            db.commit()
+    except Exception as e:
+        logger.warning("Failed to clear draft: %s", e)
+    finally:
+        db.close()
+
+
 def show_create_story_page():
     st.markdown(f"## {t('create.header')}")
+
+    user_id = st.session_state["user_id"]
+
+    # Restore draft from database if session state lost
+    if not st.session_state.get("preview_story"):
+        draft_story, draft_params, draft_usage = _load_draft(user_id)
+        if draft_story:
+            st.session_state["preview_story"] = draft_story
+            st.session_state["story_params"] = draft_params
+            st.session_state["story_usage"] = draft_usage
+            st.info("Your story draft has been restored.")
 
     # Credit balance check
     db = SessionLocal()
     try:
-        balance = check_balance(db, st.session_state["user_id"])
+        balance = check_balance(db, user_id)
     finally:
         db.close()
 
@@ -103,9 +164,7 @@ def _handle_story_generation(topic, setting, mood, age_range, story_length, lang
             return
 
     usage["story_model"] = _story_model
-    st.session_state["preview_story"] = structured
-    st.session_state["story_usage"] = usage
-    st.session_state["story_params"] = {
+    params = {
         "topic": topic,
         "setting": setting,
         "mood": mood,
@@ -113,6 +172,13 @@ def _handle_story_generation(topic, setting, mood, age_range, story_length, lang
         "story_length": story_length,
         "language": language,
     }
+    st.session_state["preview_story"] = structured
+    st.session_state["story_usage"] = usage
+    st.session_state["story_params"] = params
+
+    # Save draft to database to survive session loss
+    _save_draft(st.session_state["user_id"], structured, params, usage)
+
     st.rerun()
 
 
@@ -217,6 +283,7 @@ def _show_story_preview():
         if st.button(t("create.btn_discard")):
             del st.session_state["preview_story"]
             del st.session_state["story_params"]
+            _clear_draft(st.session_state["user_id"])
             st.rerun()
 
 
@@ -312,6 +379,9 @@ def _save_and_generate(structured, params):
         del st.session_state["preview_story"]
         del st.session_state["story_params"]
         st.session_state.pop("story_usage", None)
+
+        # Clear draft from database
+        _clear_draft(user_id)
 
         st.success(t("create.saved", title=structured.title))
         st.info(t("create.check_library"))

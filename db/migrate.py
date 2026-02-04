@@ -35,6 +35,19 @@ def run_migrations():
                 ))
                 logger.info("Added users.credit_balance column")
 
+            # Draft story columns (preserve story preview across session loss)
+            draft_columns = {
+                "draft_story_json": "TEXT",
+                "draft_params_json": "TEXT",
+                "draft_usage_json": "TEXT",
+            }
+            for col_name, col_type in draft_columns.items():
+                if not _column_exists(inspector, "users", col_name):
+                    conn.execute(text(
+                        f"ALTER TABLE users ADD COLUMN {col_name} {col_type}"
+                    ))
+                    logger.info("Added users.%s column", col_name)
+
         # --- Story table additions ---
         if _table_exists(inspector, "stories"):
             story_columns = {
