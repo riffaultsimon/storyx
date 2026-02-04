@@ -13,7 +13,7 @@
   "app.payment_already_processed": "This payment has already been processed.",
   "app.payment_cancelled": "Payment was cancelled.",
 
-  "login.title": "StoryX",
+  "login.title": "storyx",
   "login.subtitle": "Magical stories for little dreamers",
   "login.tab_login": "Login",
   "login.tab_register": "Register",

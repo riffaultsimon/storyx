@@ -13,7 +13,7 @@
   "app.payment_already_processed": "Diese Zahlung wurde bereits verarbeitet.",
   "app.payment_cancelled": "Zahlung wurde abgebrochen.",
 
-  "login.title": "StoryX",
+  "login.title": "storyx",
   "login.subtitle": "Magische Geschichten fuer kleine Traeumer",
   "login.tab_login": "Anmelden",
   "login.tab_register": "Registrieren",
