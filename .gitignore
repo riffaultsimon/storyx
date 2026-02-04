@@ -12,6 +12,7 @@ media/
 *.mp3
 *.wav
 *.png
+!ui/assets/*.png
 *.jpg
 .streamlit/secrets.toml
 *.db
