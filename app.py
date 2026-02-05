@@ -197,12 +197,6 @@ def _handle_stripe_return():
 _handle_google_callback()
 _handle_stripe_return_before_login()
 
-# Handle footer navigation links (works for both logged-in and guest users)
-_footer_nav = st.query_params.get("nav")
-if _footer_nav:
-    st.query_params.clear()
-    st.session_state["page"] = _footer_nav
-
 if not st.session_state.get("logged_in"):
     _guest_page = st.session_state.pop("page", None)
     if _guest_page == "Privacy Policy":
@@ -299,11 +293,43 @@ st.markdown(
         A trade name of [Your Company] SRL. Registered Office: [Address], Belgium<br>
         VAT: BE 0123.456.789 <span class="footer-separator">|</span> RPM [City]<br><br>
         <em>Transparency Notice: This service uses a hybrid of user-recorded audio and AI-generated narration.
-        AI-generated segments are marked within the application.</em><br><br>
-        <a href="?nav=Privacy+Policy">Privacy Policy</a>
-        <span class="footer-separator">|</span>
-        <a href="?nav=Terms">Terms of Service</a>
+        AI-generated segments are marked within the application.</em>
     </div>
     """,
     unsafe_allow_html=True,
 )
+
+_fc1, _fc2, _fc3 = st.columns([1, 2, 1])
+with _fc2:
+    with stylable_container(
+        key="footer_links",
+        css_styles="""
+            button {
+                background: none !important;
+                border: none !important;
+                color: #FF8C00 !important;
+                font-weight: 600 !important;
+                font-size: 0.8rem !important;
+                padding: 0.2rem 0.5rem !important;
+                cursor: pointer;
+            }
+            button:hover {
+                text-decoration: underline;
+                background: none !important;
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            button p {
+                color: #FF8C00 !important;
+            }
+        """,
+    ):
+        _fl1, _fl2 = st.columns(2)
+        with _fl1:
+            if st.button("Privacy Policy", key="footer_privacy"):
+                st.session_state.page = "Privacy Policy"
+                st.rerun()
+        with _fl2:
+            if st.button("Terms of Service", key="footer_terms"):
+                st.session_state.page = "Terms"
+                st.rerun()
