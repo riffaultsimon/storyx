@@ -10,6 +10,7 @@ from ui.pages.account import show_account_page
 from ui.pages.buy_credits import show_buy_credits_page
 from ui.pages.admin import show_admin_page
 from ui.pages.terms import show_terms_page
+from ui.pages.privacy import show_privacy_page
 from credits.service import check_balance
 from i18n import t, LANGUAGES
 
@@ -196,8 +197,24 @@ def _handle_stripe_return():
 _handle_google_callback()
 _handle_stripe_return_before_login()
 
+# Handle footer navigation links (works for both logged-in and guest users)
+_footer_nav = st.query_params.get("nav")
+if _footer_nav:
+    st.query_params.clear()
+    st.session_state["page"] = _footer_nav
+
 if not st.session_state.get("logged_in"):
-    show_login_page()
+    _guest_page = st.session_state.pop("page", None)
+    if _guest_page == "Privacy Policy":
+        show_privacy_page()
+        if st.button(t("app.back_to_login")):
+            st.rerun()
+    elif _guest_page == "Terms":
+        show_terms_page()
+        if st.button(t("app.back_to_login")):
+            st.rerun()
+    else:
+        show_login_page()
 else:
     _handle_stripe_return()
 
@@ -271,6 +288,8 @@ else:
         show_admin_page()
     elif page == "Terms":
         show_terms_page()
+    elif page == "Privacy Policy":
+        show_privacy_page()
 
 # --- FOOTER ---
 st.markdown(
@@ -281,9 +300,9 @@ st.markdown(
         VAT: BE 0123.456.789 <span class="footer-separator">|</span> RPM [City]<br><br>
         <em>Transparency Notice: This service uses a hybrid of user-recorded audio and AI-generated narration.
         AI-generated segments are marked within the application.</em><br><br>
-        <a href="#" onclick="return false;">Privacy Policy</a>
+        <a href="?nav=Privacy+Policy">Privacy Policy</a>
         <span class="footer-separator">|</span>
-        <a href="#" onclick="return false;">Terms of Service</a>
+        <a href="?nav=Terms">Terms of Service</a>
     </div>
     """,
     unsafe_allow_html=True,
