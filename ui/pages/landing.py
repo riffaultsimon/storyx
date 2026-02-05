@@ -80,7 +80,7 @@ def show_landing_page():
                         transform: translateY(-3px) !important;
                         box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3) !important;
                     }
-                    button p { color: #FF8C00 !important; }
+                    div.stButton > button p { color: #FF8C00 !important; }
                 """,
             ):
                 if st.button(t("landing.cta_login"), key="landing_login"):
