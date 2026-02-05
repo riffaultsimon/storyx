@@ -64,6 +64,7 @@
   "create.story_length.short": "Kurz",
   "create.story_length.medium": "Mittel",
   "create.story_length.long": "Lang",
+  "create.story_length.very long": "Sehr lang",
   "create.btn_generate": "Geschichte erstellen",
   "create.need_topic": "Bitte gib ein Thema und einen Ort an.",
   "create.generating": "Deine Geschichte wird erstellt...",
