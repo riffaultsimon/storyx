@@ -155,6 +155,7 @@ def inject_custom_css():
             display: inline-block;
             animation: swim 3s ease-in-out infinite;
             transition: text-shadow 0.3s ease;
+            -webkit-text-fill-color: initial;
         }
 
         /* --- Animation 2: Ink Trail Glow on Hover --- */
@@ -185,9 +186,12 @@ def inject_custom_css():
 
         .typewriter-title {
             display: inline-block;
+            background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             border-right: 3px solid #FF8C00;
-            animation: typewriter-reveal 1.5s steps(14, end) forwards,
-                       blink-caret 0.75s step-end infinite;
+            animation: typewriter-reveal 1.5s steps(14, end) both,
+                       blink-caret 0.75s step-end 1.5s infinite;
         }
 
         .typewriter-subtitle {
