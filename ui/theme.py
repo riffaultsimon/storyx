@@ -261,6 +261,62 @@ def inject_custom_css():
             color: #636E72;
             line-height: 1.5;
         }
+
+        /* --- Landing Page --- */
+        .landing-hero {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+        }
+
+        .landing-features-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #5D4E37;
+            margin: 3rem 0 1.5rem;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+        }
+
+        .landing-features-title::before,
+        .landing-features-title::after {
+            content: " — ";
+            color: #FFD93D;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 2px solid #FFD93D;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.15);
+            border-color: #FF8C00;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2D3436;
+            margin-bottom: 0.5rem;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+        }
+
+        .feature-card-desc {
+            font-size: 0.9rem;
+            color: #636E72;
+            line-height: 1.5;
+        }
         </style>
         """,
         unsafe_allow_html=True,

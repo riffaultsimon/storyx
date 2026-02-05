@@ -4,6 +4,7 @@ from streamlit_extras.stylable_container import stylable_container
 from db.session import init_db, SessionLocal
 from ui.theme import inject_custom_css
 from ui.pages.login import show_login_page
+from ui.pages.landing import show_landing_page
 from ui.pages.create_story import show_create_story_page
 from ui.pages.library import show_library_page
 from ui.pages.account import show_account_page
@@ -201,14 +202,16 @@ if not st.session_state.get("logged_in"):
     _guest_page = st.session_state.pop("page", None)
     if _guest_page == "Privacy Policy":
         show_privacy_page()
-        if st.button(t("app.back_to_login")):
+        if st.button(t("app.back_to_home")):
             st.rerun()
     elif _guest_page == "Terms":
         show_terms_page()
-        if st.button(t("app.back_to_login")):
+        if st.button(t("app.back_to_home")):
             st.rerun()
-    else:
+    elif _guest_page == "Login":
         show_login_page()
+    else:
+        show_landing_page()
 else:
     _handle_stripe_return()
 
