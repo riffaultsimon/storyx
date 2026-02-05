@@ -25,6 +25,10 @@ def inject_custom_css():
             transition: all 0.3s ease;
         }
 
+        .stButton > button p {
+            color: white !important;
+        }
+
         .stButton > button:hover {
             background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
             transform: translateY(-2px);
