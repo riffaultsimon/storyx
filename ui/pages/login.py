@@ -32,9 +32,9 @@ def show_login_page():
 
     st.markdown(
         '<div class="main-header">'
-        '<div style="font-size: 4rem; margin-bottom: 0.5rem;">🐙</div>'
-        f"<h1>{t('login.title')}</h1>"
-        f"<p>{t('login.subtitle')}</p>"
+        '<div class="header-octopus" style="font-size: 4rem; margin-bottom: 0.5rem;">🐙</div>'
+        f'<h1><span class="typewriter-title">{t("login.title")}</span></h1>'
+        f'<p class="typewriter-subtitle">{t("login.subtitle")}</p>'
         "</div>",
         unsafe_allow_html=True,
     )

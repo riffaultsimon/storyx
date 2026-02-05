@@ -142,6 +142,62 @@ def inject_custom_css():
         .seg-narrator {
             background: #636E72;
         }
+
+        /* --- Animation 1: Swimming Octopus --- */
+        @keyframes swim {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25%      { transform: translateY(-4px) rotate(-5deg); }
+            50%      { transform: translateY(0) rotate(0deg); }
+            75%      { transform: translateY(2px) rotate(5deg); }
+        }
+
+        .header-octopus {
+            display: inline-block;
+            animation: swim 3s ease-in-out infinite;
+            transition: text-shadow 0.3s ease;
+        }
+
+        /* --- Animation 2: Ink Trail Glow on Hover --- */
+        .header-octopus:hover {
+            text-shadow: 0 0 12px #FF8C00, 0 0 36px #FF6B6B, 0 0 60px rgba(255, 140, 0, 0.3);
+            animation: swim 1.5s ease-in-out infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.6));
+        }
+
+        /* --- Animation 3: Nav Emoji Bounce --- */
+        @keyframes nav-bounce {
+            0%, 100% { transform: translateY(0); }
+            40%      { transform: translateY(-5px); }
+            60%      { transform: translateY(-2px); }
+        }
+
+        /* --- Animation 4: Typewriter Title --- */
+        @keyframes typewriter-reveal {
+            from { clip-path: inset(0 100% 0 0); }
+            to   { clip-path: inset(0 0 0 0); }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50%      { border-color: #FF8C00; }
+        }
+
+        .typewriter-title {
+            display: inline-block;
+            border-right: 3px solid #FF8C00;
+            animation: typewriter-reveal 1.5s steps(14, end) forwards,
+                       blink-caret 0.75s step-end infinite;
+        }
+
+        .typewriter-subtitle {
+            opacity: 0;
+            animation: fade-in 0.6s ease 1.6s forwards;
+        }
+
+        @keyframes fade-in {
+            to { opacity: 1; }
+        }
         </style>
         """,
         unsafe_allow_html=True,

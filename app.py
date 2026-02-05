@@ -51,6 +51,7 @@ def nav_item(label, icon, target_page):
             button:hover {{
                 background: rgba(255, 140, 0, 0.10) !important;
                 border-left: 3px solid #FFA502 !important;
+                animation: nav-bounce 0.4s ease;
             }}
             button p {{
                 color: {text_color} !important;
@@ -207,7 +208,7 @@ else:
     # --- SIDEBAR NAVIGATION ---
     with st.sidebar:
         st.markdown(
-            '<div class="main-header"><h1 style="font-size:2.2rem; color:#FF8C00;">storyx 🐙</h1></div>',
+            '<div class="main-header"><h1 style="font-size:2.2rem; color:#FF8C00;">storyx <span class="header-octopus">🐙</span></h1></div>',
             unsafe_allow_html=True,
         )
         st.markdown(t("app.welcome", username=st.session_state.get('username', 'Explorer')))
