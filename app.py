@@ -271,3 +271,20 @@ else:
         show_admin_page()
     elif page == "Terms":
         show_terms_page()
+
+# --- FOOTER ---
+st.markdown(
+    """
+    <div class="storyx-footer">
+        <div class="footer-brand"><span class="header-octopus">🐙</span> &copy; 2026 Storyx</div>
+        A trade name of [Your Company] SRL. Registered Office: [Address], Belgium<br>
+        VAT: BE 0123.456.789 <span class="footer-separator">|</span> RPM [City]<br><br>
+        <em>Transparency Notice: This service uses a hybrid of user-recorded audio and AI-generated narration.
+        AI-generated segments are marked within the application.</em><br><br>
+        <a href="#" onclick="return false;">Privacy Policy</a>
+        <span class="footer-separator">|</span>
+        <a href="#" onclick="return false;">Terms of Service</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)

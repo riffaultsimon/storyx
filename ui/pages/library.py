@@ -152,6 +152,10 @@ def _render_story_card(story: Story, db):
                 cover_bytes = read_file_bytes(story.cover_image_path)
                 if cover_bytes:
                     st.image(cover_bytes, width=200)
+                    st.markdown(
+                        f'<span class="ai-badge">{t("library.ai_cover")}</span>',
+                        unsafe_allow_html=True,
+                    )
                 else:
                     st.markdown(f"*{t('library.no_cover')}*")
             else:
@@ -159,6 +163,10 @@ def _render_story_card(story: Story, db):
 
         with col_info:
             st.markdown(f"### {story.title}")
+            st.markdown(
+                f'<span class="ai-badge">{t("library.ai_story")}</span>',
+                unsafe_allow_html=True,
+            )
             st.markdown(t("library.mood_age", mood=story.mood or 'N/A', age=story.age_range or 'N/A'))
 
             if story.summary:
@@ -167,6 +175,10 @@ def _render_story_card(story: Story, db):
             if story.status == "ready" and story.audio_path:
                 audio_bytes = read_file_bytes(story.audio_path)
                 if audio_bytes:
+                    st.markdown(
+                        f'<span class="ai-badge">{t("library.ai_audio")}</span>',
+                        unsafe_allow_html=True,
+                    )
                     st.audio(audio_bytes, format="audio/mp3")
 
                     if story.duration_seconds:
@@ -209,13 +221,25 @@ def _render_tile(story: Story):
             cover_bytes = read_file_bytes(story.cover_image_path)
             if cover_bytes:
                 st.image(cover_bytes, use_container_width=True)
+                st.markdown(
+                    f'<span class="ai-badge" style="font-size:0.65rem;">{t("library.ai_cover")}</span>',
+                    unsafe_allow_html=True,
+                )
 
-        st.markdown(f"**{story.title}**")
+        st.markdown(
+            f'**{story.title}**<br>'
+            f'<span class="ai-badge" style="font-size:0.65rem;">{t("library.ai_story")}</span>',
+            unsafe_allow_html=True,
+        )
         st.caption(f"{story.mood or ''} | {story.age_range or ''}")
 
         if story.status == "ready" and story.audio_path:
             audio_bytes = read_file_bytes(story.audio_path)
             if audio_bytes:
+                st.markdown(
+                    f'<span class="ai-badge" style="font-size:0.65rem;">{t("library.ai_audio")}</span>',
+                    unsafe_allow_html=True,
+                )
                 st.audio(audio_bytes, format="audio/mp3")
                 _download_link(audio_bytes, _safe_filename(story.title), t("library.download"))
 

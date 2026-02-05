@@ -95,6 +95,7 @@
   "create.fx_monster": "Monstruo",
   "create.fx_echo": "Eco / Cueva",
   "create.fx_underwater": "Bajo el agua",
+  "create.ai_notice": "Esta historia, incluyendo su texto, personajes y estructura, fue generada por inteligencia artificial. Puedes editar y personalizar el contenido antes de guardarlo.",
 
   "library.header": "Mi biblioteca",
   "library.empty": "Aún no has creado ninguna historia. ¡Ve a 'Crear historia' para comenzar!",
@@ -116,6 +117,9 @@
   "library.download_mp3": "Descargar MP3",
   "library.download": "Descargar",
   "library.audio_failed": "La generación de audio falló. Intenta crear la historia de nuevo.",
+  "library.ai_story": "Historia generada por IA",
+  "library.ai_cover": "Portada generada por IA",
+  "library.ai_audio": "Audio: generado por IA o grabado por el usuario",
 
   "account.header": "Configuración de la cuenta",
   "account.not_found": "Usuario no encontrado.",
@@ -231,5 +235,6 @@
   "terms.section_b": "### B. Propiedad Intelectual\n\nTodas las historias, ilustraciones y contenidos de audio generados a través de StoryX pertenecen al usuario que los creó. Eres libre de usar, compartir y distribuir tus historias generadas para fines personales y no comerciales.\n\nAl utilizar la plataforma, otorgas a StoryX una licencia no exclusiva y gratuita para almacenar y mostrar tu contenido generado dentro de la plataforma con el fin de proporcionar el servicio.\n\nLa marca StoryX, el código fuente, los modelos de IA y la tecnología subyacente siguen siendo propiedad exclusiva de sus respectivos propietarios. No se transfieren derechos sobre estos elementos a los usuarios.",
   "terms.section_c": "### C. Responsabilidad y Limitaciones de la IA\n\nStoryX utiliza inteligencia artificial para generar contenido. Por lo tanto:\n\n- **Sin garantía de exactitud:** El contenido generado por IA puede contener errores, inconsistencias o elementos inesperados (comúnmente conocidos como \"alucinaciones\").\n- **Supervisión parental requerida:** Las historias están diseñadas para niños, pero se recomienda la revisión parental del contenido generado antes de compartirlo con menores.\n- **Sin responsabilidad por el contenido de la IA:** StoryX y sus operadores no pueden ser considerados responsables del contenido generado por los modelos de IA, incluidas las inexactitudes o el contenido inapropiado que pueda producirse ocasionalmente.\n- **Disponibilidad del servicio:** Nos esforzamos por mantener un servicio continuo, pero no podemos garantizar una disponibilidad ininterrumpida.",
   "terms.section_d": "### D. Protección de Menores\n\nDe acuerdo con la legislación belga y las regulaciones europeas:\n\n- Los usuarios deben tener al menos **13 años** para crear una cuenta en StoryX.\n- Los niños menores de 13 años solo pueden usar la plataforma a través de una cuenta creada y supervisada por un padre o tutor legal.\n- Los padres y tutores son responsables de supervisar el uso de la plataforma por parte de sus hijos y de revisar el contenido generado.\n- StoryX no recopila deliberadamente datos personales de niños menores de 13 años sin el consentimiento parental.",
+  "terms.section_e": "### E. Audio del Usuario y Narración Híbrida con IA\n\n1. **Integración de audio:** Nuestro servicio le permite grabar o cargar clips de audio (\"Audio del Usuario\") para integrarlos en una historia digital junto con la narración generada por IA.\n2. **Sin clonación de voz:** En esta etapa del servicio, no creamos un clon sintético ni una \"huella vocal\" de su voz. Simplemente \"cortamos y pegamos\" su audio grabado en el archivo de la historia.\n3. **Propiedad y licencia:** Usted conserva la propiedad de su Audio del Usuario. Nos otorga una licencia limitada y temporal para almacenar y procesar este audio únicamente para generar la historia solicitada.\n4. **Etiquetado de IA:** En cumplimiento con la Ley de IA de la UE, todas las historias generadas contendrán una etiqueta de metadatos o una divulgación audible que indique: \"Esta historia contiene contenido generado por IA mezclado con audio proporcionado por el usuario.\"\n5. **Retención:** El Audio del Usuario se almacena en servidores seguros ubicados en la UE (Google Cloud) y se elimina [X] días después de la generación final de la historia, a menos que elija guardarlo en su biblioteca personal.",
   "terms.last_updated": "Última actualización: febrero de 2026"
 }

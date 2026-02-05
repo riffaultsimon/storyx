@@ -187,6 +187,12 @@ def _show_story_preview():
     params = st.session_state["story_params"]
 
     st.markdown(f"### {t('create.preview_title')}")
+    st.markdown(
+        f'<div class="ai-notice">'
+        f'<span class="ai-badge">&#129302; AI</span> {t("create.ai_notice")}'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
     st.caption(t("create.preview_hint"))
 
     edited_title = st.text_input(

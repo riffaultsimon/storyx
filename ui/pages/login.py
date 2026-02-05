@@ -110,6 +110,7 @@ def show_login_page():
             st.markdown(t("terms.section_b"))
             st.markdown(t("terms.section_c"))
             st.markdown(t("terms.section_d"))
+            st.markdown(t("terms.section_e"))
             st.caption(t("terms.last_updated"))
         reg_submitted = st.button(t("login.btn_register"))
 

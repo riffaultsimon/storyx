@@ -202,6 +202,61 @@ def inject_custom_css():
         @keyframes fade-in {
             to { opacity: 1; }
         }
+
+        /* --- Footer --- */
+        .storyx-footer {
+            margin-top: 4rem;
+            padding: 1.5rem 1rem;
+            border-top: 2px solid #FFD93D;
+            text-align: center;
+            color: #636E72;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .storyx-footer .footer-brand {
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .storyx-footer a {
+            color: #FF8C00;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .storyx-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .storyx-footer .footer-separator {
+            margin: 0 0.3rem;
+        }
+
+        /* --- AI Disclosure Badge --- */
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #74B9FF, #A29BFE);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+            padding: 0.25rem 0.7rem;
+            border-radius: 12px;
+            margin-right: 0.4rem;
+        }
+
+        .ai-notice {
+            background: rgba(116, 185, 255, 0.08);
+            border: 1px solid rgba(116, 185, 255, 0.3);
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: #636E72;
+            line-height: 1.5;
+        }
         </style>
         """,
         unsafe_allow_html=True,
