@@ -30,33 +30,62 @@ def show_landing_page():
         unsafe_allow_html=True,
     )
 
-    # --- CTA Button ---
-    col1, col2, col3 = st.columns([1, 1, 1])
+    # --- CTA Buttons ---
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        with stylable_container(
-            key="cta_start",
-            css_styles="""
-                button {
-                    background: linear-gradient(135deg, #FF6B6B, #FF8E8E) !important;
-                    color: white !important;
-                    border: none !important;
-                    border-radius: 30px !important;
-                    padding: 0.75rem 2.5rem !important;
-                    font-size: 1.1rem !important;
-                    font-weight: 700 !important;
-                    width: 100%;
-                    transition: all 0.3s ease;
-                }
-                button:hover {
-                    transform: translateY(-3px) !important;
-                    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5) !important;
-                }
-                button p { color: white !important; }
-            """,
-        ):
-            if st.button(t("landing.cta_start"), key="landing_get_started"):
-                st.session_state.page = "Login"
-                st.rerun()
+        btn_left, btn_right = st.columns(2)
+        with btn_left:
+            with stylable_container(
+                key="cta_start",
+                css_styles="""
+                    button {
+                        background: linear-gradient(135deg, #FF6B6B, #FF8E8E) !important;
+                        color: white !important;
+                        border: none !important;
+                        border-radius: 30px !important;
+                        padding: 0.75rem 2.5rem !important;
+                        font-size: 1.1rem !important;
+                        font-weight: 700 !important;
+                        width: 100%;
+                        transition: all 0.3s ease;
+                    }
+                    button:hover {
+                        transform: translateY(-3px) !important;
+                        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5) !important;
+                    }
+                    button p { color: white !important; }
+                """,
+            ):
+                if st.button(t("landing.cta_start"), key="landing_get_started"):
+                    st.session_state.page = "Login"
+                    st.rerun()
+
+        with btn_right:
+            with stylable_container(
+                key="cta_login",
+                css_styles="""
+                    button {
+                        background: transparent !important;
+                        color: #FF8C00 !important;
+                        border: 2px solid #FF8C00 !important;
+                        border-radius: 30px !important;
+                        padding: 0.75rem 2.5rem !important;
+                        font-size: 1.1rem !important;
+                        font-weight: 700 !important;
+                        width: 100%;
+                        transition: all 0.3s ease;
+                    }
+                    button:hover {
+                        background: rgba(255, 140, 0, 0.08) !important;
+                        transform: translateY(-3px) !important;
+                        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3) !important;
+                    }
+                    button p { color: #FF8C00 !important; }
+                """,
+            ):
+                if st.button(t("landing.cta_login"), key="landing_login"):
+                    st.session_state.page = "Login"
+                    st.rerun()
 
     # --- Features Section ---
     st.markdown(

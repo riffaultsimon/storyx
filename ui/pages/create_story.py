@@ -102,31 +102,31 @@ def show_create_story_page():
         return
 
     with st.form("story_form"):
-        col1, col2 = st.columns(2)
+        topic = st.text_area(
+            t("create.topic_label"),
+            placeholder=t("create.topic_placeholder"),
+            height=100,
+        )
+        setting = st.text_area(
+            t("create.setting_label"),
+            placeholder=t("create.setting_placeholder"),
+            height=100,
+        )
 
-        with col1:
-            topic = st.text_area(
-                t("create.topic_label"),
-                placeholder=t("create.topic_placeholder"),
-                height=100,
-            )
-            setting = st.text_area(
-                t("create.setting_label"),
-                placeholder=t("create.setting_placeholder"),
-                height=100,
-            )
-            mood = st.selectbox(
-                t("create.mood"),
-                MOODS,
-                format_func=lambda m: t(f"create.mood.{m}"),
-            )
-
-        with col2:
+        opt1, opt2, opt3 = st.columns(3)
+        with opt1:
             age_range = st.selectbox(t("create.age_range"), AGE_RANGES)
+        with opt2:
             story_length = st.selectbox(
                 t("create.story_length"),
                 STORY_LENGTHS,
                 format_func=lambda s: t(f"create.story_length.{s}"),
+            )
+        with opt3:
+            mood = st.selectbox(
+                t("create.mood"),
+                MOODS,
+                format_func=lambda m: t(f"create.mood.{m}"),
             )
 
         submitted = st.form_submit_button(t("create.btn_generate"))

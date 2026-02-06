@@ -35,6 +35,27 @@ def inject_custom_css():
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
 
+        .stFormSubmitButton > button {
+            border-radius: 25px;
+            padding: 0.5rem 2rem;
+            font-weight: 700;
+            font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .stFormSubmitButton > button p {
+            color: white !important;
+        }
+
+        .stFormSubmitButton > button:hover {
+            background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
         .story-card {
             background: white;
             border-radius: 20px;
