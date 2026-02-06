@@ -310,17 +310,18 @@ with _fc2:
         key="footer_links",
         css_styles="""
             button {
-                background: none !important;
-                border: none !important;
+                background: white !important;
+                border: 2px solid #FF8C00 !important;
+                border-radius: 20px !important;
                 color: #FF8C00 !important;
                 font-weight: 600 !important;
                 font-size: 0.8rem !important;
-                padding: 0.2rem 0.5rem !important;
+                padding: 0.3rem 1rem !important;
                 cursor: pointer;
+                transition: all 0.3s ease;
             }
             button:hover {
-                text-decoration: underline;
-                background: none !important;
+                background: rgba(255, 140, 0, 0.08) !important;
                 transform: none !important;
                 box-shadow: none !important;
             }
