@@ -199,14 +199,16 @@ _handle_google_callback()
 _handle_stripe_return_before_login()
 
 if not st.session_state.get("logged_in"):
-    _guest_page = st.session_state.pop("page", None)
+    _guest_page = st.session_state.get("page")
     if _guest_page == "Privacy Policy":
         show_privacy_page()
         if st.button(t("app.back_to_home")):
+            st.session_state.pop("page", None)
             st.rerun()
     elif _guest_page == "Terms":
         show_terms_page()
         if st.button(t("app.back_to_home")):
+            st.session_state.pop("page", None)
             st.rerun()
     elif _guest_page == "Login":
         show_login_page()
@@ -302,37 +304,43 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-_fc1, _fc2, _fc3 = st.columns([1, 2, 1])
-with _fc2:
-    with stylable_container(
-        key="footer_links",
-        css_styles="""
-            button {
-                background: none !important;
-                border: none !important;
-                color: #FF8C00 !important;
-                font-weight: 600 !important;
-                font-size: 0.8rem !important;
-                padding: 0.2rem 0.5rem !important;
-                cursor: pointer;
-            }
-            button:hover {
-                text-decoration: underline;
-                background: none !important;
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            button p {
-                color: #FF8C00 !important;
-            }
-        """,
-    ):
-        _fl1, _fl2 = st.columns(2)
-        with _fl1:
-            if st.button("Privacy Policy", key="footer_privacy"):
-                st.session_state.page = "Privacy Policy"
-                st.rerun()
-        with _fl2:
-            if st.button("Terms of Service", key="footer_terms"):
-                st.session_state.page = "Terms"
-                st.rerun()
+with stylable_container(
+    key="footer_links",
+    css_styles="""
+        div[data-testid="stHorizontalBlock"] {
+            justify-content: center;
+            gap: 1rem;
+        }
+        div[data-testid="stHorizontalBlock"] > div {
+            flex: 0 0 auto !important;
+            width: auto !important;
+        }
+        button {
+            background: none !important;
+            border: none !important;
+            color: #FF8C00 !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+            padding: 0.2rem 0.5rem !important;
+            cursor: pointer;
+        }
+        button:hover {
+            text-decoration: underline;
+            background: none !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        button p {
+            color: #FF8C00 !important;
+        }
+    """,
+):
+    _fl1, _fl2 = st.columns(2)
+    with _fl1:
+        if st.button("Privacy Policy", key="footer_privacy"):
+            st.session_state.page = "Privacy Policy"
+            st.rerun()
+    with _fl2:
+        if st.button("Terms of Service", key="footer_terms"):
+            st.session_state.page = "Terms"
+            st.rerun()
