@@ -35,8 +35,8 @@ def show_landing_page():
     with btn_left:
         with stylable_container(
             key="cta_start",
-            css_styles="""
-                button {
+            css_styles=[
+                """button {
                     background: linear-gradient(135deg, #FF6B6B, #FF8E8E) !important;
                     color: white !important;
                     border: none !important;
@@ -46,13 +46,13 @@ def show_landing_page():
                     font-weight: 700 !important;
                     width: 100%;
                     transition: all 0.3s ease;
-                }
-                button:hover {
+                }""",
+                """button:hover {
                     transform: translateY(-3px) !important;
                     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5) !important;
-                }
-                button p { color: white !important; }
-            """,
+                }""",
+                """button p { color: white !important; }""",
+            ],
         ):
             if st.button(t("landing.cta_start"), key="landing_get_started"):
                 st.session_state.page = "Login"
@@ -61,9 +61,10 @@ def show_landing_page():
     with btn_right:
         with stylable_container(
             key="cta_login",
-            css_styles="""
-                button {
+            css_styles=[
+                """button {
                     background: white !important;
+                    background-image: none !important;
                     color: #FF8C00 !important;
                     border: 2px solid #FF8C00 !important;
                     border-radius: 30px !important;
@@ -72,14 +73,14 @@ def show_landing_page():
                     font-weight: 700 !important;
                     width: 100%;
                     transition: all 0.3s ease;
-                }
-                button:hover {
+                }""",
+                """button:hover {
                     background: rgba(255, 140, 0, 0.08) !important;
                     transform: translateY(-3px) !important;
                     box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3) !important;
-                }
-                button p { color: #FF8C00 !important; }
-            """,
+                }""",
+                """button p { color: #FF8C00 !important; }""",
+            ],
         ):
             if st.button(t("landing.cta_login"), key="landing_login"):
                 st.session_state.page = "Login"

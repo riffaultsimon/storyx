@@ -38,8 +38,8 @@ def nav_item(label, icon, target_page):
 
     with stylable_container(
         key=f"nav_{target_page}",
-        css_styles=f"""
-            button {{
+        css_styles=[
+            f"""button {{
                 background: {bg} !important;
                 border: none !important;
                 border-left: {border_left} !important;
@@ -49,19 +49,18 @@ def nav_item(label, icon, target_page):
                 margin-bottom: 2px;
                 text-align: left !important;
                 transition: all 0.15s ease;
-            }}
-            button:hover {{
+            }}""",
+            f"""button:hover {{
                 background: rgba(255, 140, 0, 0.10) !important;
                 border-left: 3px solid #FFA502 !important;
-                animation: nav-bounce 0.4s ease;
-            }}
-            button p {{
+            }}""",
+            f"""button p {{
                 color: {text_color} !important;
                 font-weight: {font_weight};
                 font-size: 0.9rem;
                 margin: 0 !important;
-            }}
-        """,
+            }}""",
+        ],
     ):
         if st.button(f"{icon}  {label}", key=f"btn_{target_page}"):
             st.session_state.page = target_page
@@ -308,27 +307,27 @@ _fc1, _fc2, _fc3 = st.columns([1, 2, 1])
 with _fc2:
     with stylable_container(
         key="footer_links",
-        css_styles="""
-            button {
+        css_styles=[
+            """button {
                 background-color: white !important;
-                background-image: none !important; /* Forces gradient off */
+                background-image: none !important;
                 border: 2px solid #FF8C00 !important;
                 border-radius: 20px !important;
                 color: #FF8C00 !important;
                 height: auto !important;
                 min-height: 0px !important;
                 padding: 4px 15px !important;
-            }
-            button p {
+            }""",
+            """button p {
                 color: #FF8C00 !important;
                 font-size: 0.8rem !important;
                 font-weight: 600 !important;
-            }
-            button:hover {
+            }""",
+            """button:hover {
                 background-color: rgba(255, 140, 0, 0.08) !important;
                 border-color: #FF8C00 !important;
-            }
-        """,
+            }""",
+        ],
     ):
     # ... your columns and buttons ...
         _fl1, _fl2 = st.columns(2)
