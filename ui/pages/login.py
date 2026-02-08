@@ -17,7 +17,7 @@ from i18n import t, LANGUAGES
 def show_login_page():
     # Language selector on login page too
     lang_codes = list(LANGUAGES.keys())
-    current = st.session_state.get("lang", "en")
+    current = st.session_state.get("lang", "fr")
     idx = lang_codes.index(current) if current in lang_codes else 0
     selected = st.selectbox(
         "🌐",

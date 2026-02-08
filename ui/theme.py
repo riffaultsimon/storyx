@@ -218,6 +218,78 @@ def inject_custom_css():
             font-size: 0.75rem;
             line-height: 1.6;
         }
+
+        /* --- 10. CUSTOM LOADER (storyx_loader) --- */
+        .storyx-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .storyx-loader .octopus {
+            font-size: 3rem;
+            animation: swim 1.5s ease-in-out infinite;
+        }
+
+        .storyx-loader .loader-text {
+            margin-top: 0.5rem;
+            color: #FF8C00;
+            font-weight: 700;
+            font-size: 1rem;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* --- 11. OVERRIDE STREAMLIT SPINNER --- */
+        /* Replace the default spinner icon with octopus */
+        .stSpinner > div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stSpinner > div > span {
+            color: #FF8C00 !important;
+            font-weight: 600;
+        }
+
+        /* Hide the default spinner SVG/circle */
+        .stSpinner > div > i,
+        .stSpinner > div > svg,
+        .stSpinner > div::before {
+            display: none !important;
+        }
+
+        /* Inject octopus as spinner icon */
+        .stSpinner > div::after {
+            content: "🐙";
+            font-size: 1.5rem;
+            animation: swim 1.5s ease-in-out infinite;
+            order: -1;
+        }
+
+        /* --- 12. OVERRIDE TOP-RIGHT RUNNING INDICATOR --- */
+        [data-testid="stStatusWidget"] {
+            visibility: visible !important;
+        }
+
+        /* Hide the default running SVG animation */
+        [data-testid="stStatusWidget"] svg {
+            display: none !important;
+        }
+
+        /* Replace with octopus */
+        [data-testid="stStatusWidget"] button::before {
+            content: "🐙";
+            font-size: 1.2rem;
+            animation: swim 1s ease-in-out infinite;
+        }
         </style>
         """,
         unsafe_allow_html=True,

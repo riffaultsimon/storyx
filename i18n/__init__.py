@@ -8,10 +8,10 @@ _LANG_DIR = os.path.dirname(__file__)
 _cache: dict[str, dict] = {}
 
 LANGUAGES = {
-    "en": "English",
-    "fr": "Français",
-    "de": "Deutsch",
-    "es": "Español",
+    "fr": "🇫🇷 Français",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "es": "🇪🇸 Español",
 }
 
 
@@ -24,7 +24,7 @@ def _load_lang(code: str) -> dict:
 
 
 def get_lang() -> str:
-    return st.session_state.get("lang", "en")
+    return st.session_state.get("lang", "fr")
 
 
 def t(key: str, **kwargs) -> str:

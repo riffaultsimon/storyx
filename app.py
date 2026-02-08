@@ -231,7 +231,7 @@ else:
         # Language selector
         lang_codes = list(LANGUAGES.keys())
         lang_labels = list(LANGUAGES.values())
-        current = st.session_state.get("lang", "en")
+        current = st.session_state.get("lang", "fr")
         idx = lang_codes.index(current) if current in lang_codes else 0
         selected = st.selectbox(
             "🌐",
