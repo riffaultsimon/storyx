@@ -216,8 +216,8 @@ if not st.session_state.get("logged_in"):
 else:
     _handle_stripe_return()
 
-    # Initialize default page
-    if "page" not in st.session_state:
+    # Initialize default page (also redirect away from guest-only pages)
+    if st.session_state.get("page") in (None, "Login", ""):
         st.session_state.page = "Create Story"
 
     # --- SIDEBAR NAVIGATION ---
