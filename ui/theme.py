@@ -34,8 +34,8 @@ def inject_custom_css():
         }
 
         /* --- 3. MAIN ACTION BUTTONS (Pink Gradient) --- */
-        /* Targets all buttons EXCEPT those inside the footer container */
-        div:not([data-testid="stHeader"]) div[data-testid="column"]:not([data-testid="footer_links"]) .stButton > button,
+        /* Low-specificity default so stylable_container overrides win */
+        .stButton > button,
         .stFormSubmitButton > button {
             border-radius: 25px !important;
             padding: 0.5rem 2rem !important;
@@ -46,13 +46,15 @@ def inject_custom_css():
             transition: all 0.3s ease !important;
         }
 
-        /* Force text inside main buttons to be white */
-        div:not([data-testid="footer_links"]) .stButton > button p,
-        div:not([data-testid="footer_links"]) .stButton > button span {
+        .stButton > button p,
+        .stButton > button span,
+        .stFormSubmitButton > button p,
+        .stFormSubmitButton > button span {
             color: white !important;
         }
 
-        div:not([data-testid="footer_links"]) .stButton > button:hover {
+        .stButton > button:hover,
+        .stFormSubmitButton > button:hover {
             background: linear-gradient(135deg, #FF8E8E, #FF6B6B) !important;
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
@@ -83,7 +85,7 @@ def inject_custom_css():
 
         /* --- 5. ANIMATED HEADER & OCTOPUS --- */
         .main-header { text-align: center; padding: 1rem 0; }
-        
+
         .typewriter-title {
             display: inline-block;
             background: linear-gradient(135deg, #FF6B6B, #FFD93D);
@@ -92,6 +94,12 @@ def inject_custom_css():
             border-right: 3px solid #FF8C00;
             animation: typewriter-reveal 1.5s steps(14, end) both,
                        blink-caret 0.75s step-end infinite;
+        }
+
+        .typewriter-subtitle {
+            color: #636E72;
+            font-size: 1.1rem;
+            margin-top: 0.25rem;
         }
 
         @keyframes typewriter-reveal {
@@ -112,20 +120,84 @@ def inject_custom_css():
         .header-octopus {
             display: inline-block;
             animation: swim 3s ease-in-out infinite;
-            -webkit-text-fill-color: initial; /* Essential to keep emoji colors */
+            -webkit-text-fill-color: initial;
         }
 
-        /* --- 6. FOOTER STYLING --- */
-        .storyx-footer {
-            margin-top: 4rem;
-            padding: 1.5rem 1rem;
-            border-top: 2px solid #FFD93D;
+        /* --- 6. LANDING PAGE --- */
+        .landing-hero {
             text-align: center;
-            color: #636E72;
-            font-size: 0.75rem;
-            line-height: 1.6;
+            padding: 2rem 0 1rem;
         }
 
+        .landing-features-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2D3436;
+            margin: 2.5rem 0 1rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid #FFD93D;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2D3436;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card-desc {
+            font-size: 0.9rem;
+            color: #636E72;
+            line-height: 1.5;
+        }
+
+        /* --- 7. AI & SEGMENT BADGES --- */
+        .ai-badge {
+            display: inline-block;
+            background: rgba(116, 185, 255, 0.15);
+            color: #0984E3;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            margin: 0.25rem 0;
+        }
+
+        .seg-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .seg-narrator {
+            background: #636E72;
+        }
+
+        /* --- 8. AI NOTICE --- */
         .ai-notice {
             background: rgba(116, 185, 255, 0.08);
             border: 1px solid rgba(116, 185, 255, 0.3);
@@ -134,6 +206,17 @@ def inject_custom_css():
             margin: 0.5rem auto;
             max-width: 80%;
             font-size: 0.8rem;
+        }
+
+        /* --- 9. FOOTER STYLING --- */
+        .storyx-footer {
+            margin-top: 4rem;
+            padding: 1.5rem 1rem;
+            border-top: 2px solid #FFD93D;
+            text-align: center;
+            color: #636E72;
+            font-size: 0.75rem;
+            line-height: 1.6;
         }
         </style>
         """,
