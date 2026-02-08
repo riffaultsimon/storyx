@@ -1,24 +1,11 @@
 import streamlit as st
 from streamlit_extras.stylable_container import stylable_container
 
-from i18n import t, LANGUAGES
+from i18n import t, lang_selector
 
 
 def show_landing_page():
-    # Language selector
-    lang_codes = list(LANGUAGES.keys())
-    current = st.session_state.get("lang", "fr")
-    idx = lang_codes.index(current) if current in lang_codes else 0
-    selected = st.selectbox(
-        "🌐",
-        lang_codes,
-        index=idx,
-        format_func=lambda c: LANGUAGES[c],
-        label_visibility="collapsed",
-    )
-    if selected != current:
-        st.session_state["lang"] = selected
-        st.rerun()
+    lang_selector()
 
     # --- Hero Section ---
     st.markdown(

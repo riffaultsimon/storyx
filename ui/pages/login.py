@@ -11,24 +11,11 @@ from auth.service import (
 )
 from auth.validation import is_valid_email, password_strength
 from auth.google_oauth import is_google_oauth_configured, generate_auth_url
-from i18n import t, LANGUAGES
+from i18n import t, lang_selector
 
 
 def show_login_page():
-    # Language selector on login page too
-    lang_codes = list(LANGUAGES.keys())
-    current = st.session_state.get("lang", "fr")
-    idx = lang_codes.index(current) if current in lang_codes else 0
-    selected = st.selectbox(
-        "🌐",
-        lang_codes,
-        index=idx,
-        format_func=lambda c: LANGUAGES[c],
-        label_visibility="collapsed",
-    )
-    if selected != current:
-        st.session_state["lang"] = selected
-        st.rerun()
+    lang_selector()
 
     st.markdown(
         '<div class="main-header">'

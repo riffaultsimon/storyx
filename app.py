@@ -13,7 +13,7 @@ from ui.pages.admin import show_admin_page
 from ui.pages.terms import show_terms_page
 from ui.pages.privacy import show_privacy_page
 from credits.service import check_balance
-from i18n import t, LANGUAGES
+from i18n import t, LANGUAGES, lang_selector
 
 # --- CONFIGURATION ---
 st.set_page_config(
@@ -228,21 +228,7 @@ else:
         )
         st.markdown(t("app.welcome", username=st.session_state.get('username', 'Explorer')))
 
-        # Language selector
-        lang_codes = list(LANGUAGES.keys())
-        lang_labels = list(LANGUAGES.values())
-        current = st.session_state.get("lang", "fr")
-        idx = lang_codes.index(current) if current in lang_codes else 0
-        selected = st.selectbox(
-            "🌐",
-            lang_codes,
-            index=idx,
-            format_func=lambda c: LANGUAGES[c],
-            label_visibility="collapsed",
-        )
-        if selected != current:
-            st.session_state["lang"] = selected
-            st.rerun()
+        lang_selector()
 
         # Credit Balance Display
         db = SessionLocal()
