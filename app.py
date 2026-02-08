@@ -310,26 +310,27 @@ with _fc2:
         key="footer_links",
         css_styles="""
             button {
-                background: white !important;
+                background-color: white !important;
+                background-image: none !important; /* Forces gradient off */
                 border: 2px solid #FF8C00 !important;
                 border-radius: 20px !important;
                 color: #FF8C00 !important;
-                font-weight: 600 !important;
-                font-size: 0.8rem !important;
-                padding: 0.3rem 1rem !important;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            button:hover {
-                background: rgba(255, 140, 0, 0.08) !important;
-                transform: none !important;
-                box-shadow: none !important;
+                height: auto !important;
+                min-height: 0px !important;
+                padding: 4px 15px !important;
             }
             button p {
                 color: #FF8C00 !important;
+                font-size: 0.8rem !important;
+                font-weight: 600 !important;
+            }
+            button:hover {
+                background-color: rgba(255, 140, 0, 0.08) !important;
+                border-color: #FF8C00 !important;
             }
         """,
     ):
+    # ... your columns and buttons ...
         _fl1, _fl2 = st.columns(2)
         with _fl1:
             if st.button("Privacy Policy", key="footer_privacy"):
