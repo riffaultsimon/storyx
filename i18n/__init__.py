@@ -47,18 +47,18 @@ def t(key: str, **kwargs) -> str:
 
 
 def lang_selector():
-    """Render a compact language selector with flag images."""
+    """Render a compact language selector with flag images + pills."""
     current = st.session_state.get("lang", "fr")
 
-    # Build flag image row — active flag highlighted, others faded
+    # Flag images row (decorative, shows which is active)
     flag_imgs = []
     for code in LANGUAGES:
         fc = _FLAG_CODES[code]
         active = code == current
         style = (
-            "border:2px solid #FF8C00;border-radius:3px;cursor:pointer;"
+            "border:2px solid #FF8C00;border-radius:3px;"
             if active
-            else "opacity:0.45;border:2px solid transparent;border-radius:3px;cursor:pointer;"
+            else "opacity:0.4;border:2px solid transparent;border-radius:3px;"
         )
         flag_imgs.append(
             f'<img src="https://flagcdn.com/28x21/{fc}.png" '
@@ -66,22 +66,21 @@ def lang_selector():
         )
 
     st.markdown(
-        '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:4px;">'
+        '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:2px;">'
         + "".join(flag_imgs)
         + "</div>",
         unsafe_allow_html=True,
     )
 
-    # Selectbox for actual selection
+    # Pills selector (clickable)
     lang_codes = list(LANGUAGES.keys())
-    idx = lang_codes.index(current) if current in lang_codes else 0
-    selected = st.selectbox(
-        "🌐",
-        lang_codes,
-        index=idx,
+    selected = st.pills(
+        "lang",
+        options=lang_codes,
+        default=current,
         format_func=lambda c: LANGUAGES[c],
         label_visibility="collapsed",
     )
-    if selected != current:
+    if selected and selected != current:
         st.session_state["lang"] = selected
         st.rerun()
